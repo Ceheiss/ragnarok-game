@@ -1,3 +1,18 @@
 html {
   outline: 1px dotted red;
 }
+
+.grid-container {
+  display: grid;
+  max-width: 1000px;
+  max-height: 1000px;
+  position: relative;
+  grid-template: repeat(10, 1fr)/repeat(10, 1fr);
+}
+
+.grid-item {
+  outline: 1px solid rgba(0,0,0,0.5);
+  background: grey;
+  width: 100px;
+  height: 100px;
+}
