@@ -16,3 +16,24 @@ html {
   width: 100px;
   height: 100px;
 }
+
+.block {
+  width: 90px;
+  height: 90px;
+  border-radius: 50px;
+  background: black;
+}
+
+.weapon {
+  width: 60px;
+  height: 60px;
+  border-radius: -10px;
+  background: teal;
+}
+
+.player-1 {
+  width: 90px;
+  height: 90px;
+  border-radius: 50px;
+  background: blue;
+}
