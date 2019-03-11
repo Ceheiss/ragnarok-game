@@ -37,3 +37,10 @@ html {
   border-radius: 50px;
   background: blue;
 }
+
+.player-2 {
+  width: 90px;
+  height: 90px;
+  border-radius: 50px;
+  background: red;
+}

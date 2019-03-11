@@ -1,5 +1,6 @@
-console.log("Working JS")
+const generateRandomNum = () => Math.floor(Math.random() * 10);
 
+console.log("Working JS")
 // Step One
 /*
 Create the grid
@@ -8,63 +9,118 @@ Place weapons into the grid
 Place players
 */
 
-
+// Generate grid with blocks
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
     $('.grid-container').append('<div class="grid-item" data-x='+i+' data-y='+j+'>Block at x='+i+' y='+j+'</div>')
   }
 }
 
-$('#start-btn').click(generateBlocks)
-
-$('#reset-btn').click(resetBlocks)
-
-function resetBlocks() {
+// Clean all the board
+function reset() {
   $('.grid-item').each(function(){
-    let element = $(this);
+    const element = $(this);
     element.removeClass("block");
+    element.removeClass("weapon");
     element.removeClass("player-1");
+    element.removeClass("player-2");
   })
 }
 
+function selectBlocks() {
+  const random_x = generateRandomNum();
+  const random_y = generateRandomNum();
+  $('.grid-item').each(function(){
+    const element = $(this);
+    //console.log("$(this), this",$(this), this);
+    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
+      element.addClass("block");
+      element.addClass("unavailable");
+    }
+  })
+}
+
+function selectWeapons() {
+  const random_x = generateRandomNum();
+  const random_y = generateRandomNum();
+  $('.grid-item').each(function(){
+    const element = $(this);
+    //console.log("$(this), this",$(this), this);
+    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
+      element.addClass("weapon");
+      element.addClass("unavailable");
+    }
+  })
+}
+
+function generateWeapons(){
+  // It also kills previous things in the board
+    for (let i = 0; i < 4; i++) {
+      selectWeapons();
+    }
+}
+
 function generateBlocks(){
-  // once pressed, disable it until reset button is pressed
+  // It also kills previous things in the board
+    for (let i = 0; i < 6; i++) {
+      selectBlocks();
+    }
+}
+
+
+function setPlayer1() {
+  let random_x = generateRandomNum();
+  let random_y = generateRandomNum();
   $('.grid-item').each(function(){
     let element = $(this);
-    element.removeClass("block");
-    element.removeClass("player-1");
-    // this confusing af
-    for (let i = 0; i < 3; i++) {
-      let random_x = Math.floor(Math.random() * 10);
-      let random_y = Math.floor(Math.random() * 10);
-      console.log("X is: " + random_x, "Y is: " + random_y);
-      if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
-        element.addClass("block");
+    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
+      console.log("sabpee")
+      if (!(this.classList.contains("unavailable"))){
+        console.log("available");
+        element.addClass("player-1");
+        element.addClass("unavailable");
+      } else {
+        console.log("unavailable");
+        setPlayer1();
       }
     }
   })
 }
 
+function setPlayer2() {
+  let random_x = generateRandomNum();
+  let random_y = generateRandomNum();
+  $('.grid-item').each(function(){
+    let element = $(this);
+    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
+      console.log("sabpee")
+      if (!(this.classList.contains("unavailable"))){
+        console.log("available");
+        element.addClass("player-2");
+        element.addClass("unavailable");
+      } else {
+        console.log("unavailable");
+        setPlayer2();
+      }
+    }
+  })
+}
 
-
-// Tell where we are
+// Blocks console.log their location
 $('.grid-item').click(function(){
-  let element = $(this);
   console.log(`Coordenada X es ${this.dataset['x']}\nCoordenada Y es ${this.dataset['y']}`);
-  element.addClass("player-1")
 })
 
-// Use random numbers to add class .block to grid-item in coordinates 
-// data-x=random and data-y=random
 
-
+// To move character, put conditionals to only move within one block distance and
+// where there aren't barriers.
+// Also need to toggle (only can one element have the 'player-1' class a time)
 //$('.grid-item').click.addClass("player-1");
 
+// Event handlers
 
-$('#element').click(function(){
-    alert("ejale!")
-})
-
-
-
-
+$('#start-btn').click(generateBlocks)
+$('#start-btn').click(generateWeapons)
+$('#reset-btn').click(reset)
+$('#player-btn').click(setPlayer1)
+$('#player-btn').click(setPlayer2)
