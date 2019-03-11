@@ -27,48 +27,34 @@ function reset() {
   })
 }
 
-function selectBlocks() {
+function selectElements(className) {
   const random_x = generateRandomNum();
   const random_y = generateRandomNum();
   $('.grid-item').each(function(){
     const element = $(this);
     //console.log("$(this), this",$(this), this);
     if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
-      element.addClass("block");
-      element.addClass("unavailable");
+      console.log("sabpee")
+      if (!(this.classList.contains("unavailable"))){
+        console.log("available");
+        element.addClass(className);
+        element.addClass("unavailable");
+      } else {
+        console.log("unavailable");
+        selectElements(className);
+      }
     }
   })
 }
 
-function selectWeapons() {
-  const random_x = generateRandomNum();
-  const random_y = generateRandomNum();
-  $('.grid-item').each(function(){
-    const element = $(this);
-    //console.log("$(this), this",$(this), this);
-    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
-      element.addClass("weapon");
-      element.addClass("unavailable");
-    }
-  })
-}
-
-function generateWeapons(){
+function generate(func, times){
   // It also kills previous things in the board
-    for (let i = 0; i < 4; i++) {
-      selectWeapons();
+    for (let i = 0; i < Number(times); i++) {
+      func();
     }
 }
 
-function generateBlocks(){
-  // It also kills previous things in the board
-    for (let i = 0; i < 6; i++) {
-      selectBlocks();
-    }
-}
-
-
-function setPlayer1() {
+function setPlayers(className) {
   let random_x = generateRandomNum();
   let random_y = generateRandomNum();
   $('.grid-item').each(function(){
@@ -77,33 +63,27 @@ function setPlayer1() {
       console.log("sabpee")
       if (!(this.classList.contains("unavailable"))){
         console.log("available");
-        element.addClass("player-1");
+        element.addClass(className);
         element.addClass("unavailable");
       } else {
         console.log("unavailable");
-        setPlayer1();
+        setPlayers(className);
       }
     }
   })
 }
 
-function setPlayer2() {
-  let random_x = generateRandomNum();
-  let random_y = generateRandomNum();
-  $('.grid-item').each(function(){
-    let element = $(this);
-    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
-      console.log("sabpee")
-      if (!(this.classList.contains("unavailable"))){
-        console.log("available");
-        element.addClass("player-2");
-        element.addClass("unavailable");
-      } else {
-        console.log("unavailable");
-        setPlayer2();
-      }
-    }
-  })
+
+function generateGame(){
+  reset();
+  generate(function(){
+    selectElements("block");
+  },4)
+  generate(function(){
+    selectElements("weapon");
+  },4)
+  setPlayers("player-1");
+  setPlayers("player-2");
 }
 
 // Blocks console.log their location
@@ -111,16 +91,13 @@ $('.grid-item').click(function(){
   console.log(`Coordenada X es ${this.dataset['x']}\nCoordenada Y es ${this.dataset['y']}`);
 })
 
-
 // To move character, put conditionals to only move within one block distance and
 // where there aren't barriers.
 // Also need to toggle (only can one element have the 'player-1' class a time)
 //$('.grid-item').click.addClass("player-1");
 
 // Event handlers
-
-$('#start-btn').click(generateBlocks)
-$('#start-btn').click(generateWeapons)
+$('#start-btn').click(generateGame)
 $('#reset-btn').click(reset)
-$('#player-btn').click(setPlayer1)
-$('#player-btn').click(setPlayer2)
+
+
