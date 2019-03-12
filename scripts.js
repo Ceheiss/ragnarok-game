@@ -1,20 +1,12 @@
-const generateRandomNum = () => Math.floor(Math.random() * 10);
-
-console.log("Working JS")
-// Step One
-/*
-Create the grid
-Place barriers into the grid
-Place weapons into the grid
-Place players
-*/
-
 // Generate grid with blocks
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
     $('.grid-container').append('<div class="grid-item" data-x='+i+' data-y='+j+'>Block at x='+i+' y='+j+'</div>')
   }
 }
+
+// Generate random numbers
+const generateRandomNum = () => Math.floor(Math.random() * 10);
 
 // Clean all the board
 function reset() {
@@ -27,6 +19,7 @@ function reset() {
   })
 }
 
+// This functions helps blocks, weapons and players find an available aquare in the board
 function selectElements(className) {
   const random_x = generateRandomNum();
   const random_y = generateRandomNum();
@@ -41,49 +34,36 @@ function selectElements(className) {
         element.addClass("unavailable");
       } else {
         console.log("unavailable");
+        // Function calls itself recursively until it finds available space
         selectElements(className);
       }
     }
   })
 }
 
+// Iterates different elements to display them on the board
 function generate(func, times){
-  // It also kills previous things in the board
     for (let i = 0; i < Number(times); i++) {
       func();
     }
 }
 
-function setPlayers(className) {
-  let random_x = generateRandomNum();
-  let random_y = generateRandomNum();
-  $('.grid-item').each(function(){
-    let element = $(this);
-    if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
-      console.log("sabpee")
-      if (!(this.classList.contains("unavailable"))){
-        console.log("available");
-        element.addClass(className);
-        element.addClass("unavailable");
-      } else {
-        console.log("unavailable");
-        setPlayers(className);
-      }
-    }
-  })
-}
-
-
+// This functions generates que board calling on the diferent pieces
 function generateGame(){
   reset();
+  // Anonymous functions so I can pass the parameters to the function without calling it
   generate(function(){
     selectElements("block");
   },4)
   generate(function(){
     selectElements("weapon");
   },4)
-  setPlayers("player-1");
-  setPlayers("player-2");
+  generate(function(){
+    selectElements("player-1");
+  },1)
+  generate(function(){
+    selectElements("player-2");
+  },1)
 }
 
 // Blocks console.log their location
