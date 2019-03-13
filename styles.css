@@ -20,8 +20,9 @@ html {
 .block {
   width: 90px;
   height: 90px;
-  border-radius: 50px;
-  background: black;
+  border-radius: 15px;
+  background-image: radial-gradient( black,#222,grey);
+  border: 4px solid black;
 }
 
 .weapon {

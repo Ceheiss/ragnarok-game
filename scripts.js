@@ -16,6 +16,7 @@ function reset() {
     element.removeClass("weapon");
     element.removeClass("player-1");
     element.removeClass("player-2");
+    element.removeClass("unavailable");
   })
 }
 
@@ -27,7 +28,6 @@ function selectElements(className) {
     const element = $(this);
     //console.log("$(this), this",$(this), this);
     if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
-      console.log("sabpee")
       if (!(this.classList.contains("unavailable"))){
         console.log("available");
         element.addClass(className);
@@ -54,7 +54,7 @@ function generateGame(){
   // Anonymous functions so I can pass the parameters to the function without calling it
   generate(function(){
     selectElements("block");
-  },4)
+  },12)
   generate(function(){
     selectElements("weapon");
   },4)
@@ -81,3 +81,9 @@ $('#start-btn').click(generateGame)
 $('#reset-btn').click(reset)
 
 
+/*
+Pseudo Code para le movimiento:
+1. iluminar los posibles movimientos
+2. if (box !unavailable AND (distancia de this.x < 3 AND this.y estable) OR (distancia de this.y < 3 AND this.x estable))
+4. Avanzar a donde se hizo el click
+*/
