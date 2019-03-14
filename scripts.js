@@ -20,6 +20,13 @@ function reset() {
   })
 }
 
+function playerReset() {
+  $('.grid-item').each(function(){
+    const element = $(this);
+    element.removeClass("player-1");
+  })
+}
+
 // This functions helps blocks, weapons and players find an available aquare in the board
 function selectElements(className) {
   const random_x = generateRandomNum();
@@ -87,3 +94,42 @@ Pseudo Code para le movimiento:
 2. if (box !unavailable AND (distancia de this.x < 3 AND this.y estable) OR (distancia de this.y < 3 AND this.x estable))
 4. Avanzar a donde se hizo el click
 */
+
+$('.grid-item').click(function(){
+  let player1X = 0;
+  let player1Y = 0;
+  $('.grid-item').each(function(){
+    const element = $(this);
+    if (element.hasClass("player-1")) {
+      player1X = this.dataset['x'];
+      player1Y = this.dataset['y'];
+    }
+  })
+  // Make sure is within distance
+  if ((Math.abs(this.dataset['x'] - player1X) <= 3) && (this.dataset['y'] === player1Y)
+      || (Math.abs(this.dataset['y'] - player1Y) <= 3) && (this.dataset['x'] === player1X)) {
+      const element = $(this);
+      if (!element.hasClass("block") && !element.hasClass("player-2")){
+        playerReset();
+        element.addClass("player-1");
+        element.addClass("unavailable");
+        playerEncounter();
+      }
+  }
+});
+
+// Not working yet
+function playerEncounter(){
+  let player2X = 0;
+  let player2Y = 0;
+  $('.grid-item').each(function(){
+    if (element.hasClass("player-2")) {
+      player2X = this.dataset['x'];
+      player2Y = this.dataset['y'];
+    }
+    const element = $(this);
+    if (Math.abs(this.dataset['y'] - player2Y) === 1){
+      alert("Hola Loco");
+    }
+  })
+}
