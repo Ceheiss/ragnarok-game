@@ -113,23 +113,29 @@ $('.grid-item').click(function(){
         playerReset();
         element.addClass("player-1");
         element.addClass("unavailable");
-        playerEncounter();
+        console.log("pla1XY",player1X,player1Y)
+        playerEncounter(this.dataset['y'], this.dataset['x']);
       }
   }
 });
 
-// Not working yet
-function playerEncounter(){
+
+
+
+// A little bit buggie but working
+function playerEncounter(player1Y, player1X){
   let player2X = 0;
   let player2Y = 0;
   $('.grid-item').each(function(){
+    const element = $(this);
     if (element.hasClass("player-2")) {
       player2X = this.dataset['x'];
       player2Y = this.dataset['y'];
-    }
-    const element = $(this);
-    if (Math.abs(this.dataset['y'] - player2Y) === 1){
-      alert("Hola Loco");
+      console.log("player2xy",player2X,player2Y);
+      if (player1Y === player2Y && (Math.abs(player1X - player2X) === 1)
+          || player1X === player2X && (Math.abs(player1Y - player2Y) === 1)){
+        alert("Hola Loco, time to fight");
+      }
     }
   })
 }
