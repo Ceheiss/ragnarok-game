@@ -104,6 +104,7 @@ function movePlayer1(){
     let player1Y = 0;
     $('.grid-item').each(function(){
       const element = $(this);
+      // I take the coordinates of the player
       if (element.hasClass("player-1")) {
         player1X = this.dataset['x'];
         player1Y = this.dataset['y'];
@@ -114,6 +115,10 @@ function movePlayer1(){
         || (Math.abs(this.dataset['y'] - player1Y) <= 3) && (this.dataset['x'] === player1X)) {
         const element = $(this);
         if (!element.hasClass("block") && !element.hasClass("player-2") && player1Turn){
+          if (element.hasClass("weapon")){
+            alert("Tengo arma!");
+            element.removeClass("weapon");
+          }
           playerReset("player-1");
           element.addClass("player-1");
           element.addClass("unavailable");
@@ -125,37 +130,51 @@ function movePlayer1(){
   });
 }
 
+function isSquareAvailable(square) {
+  const firstCondition = (Math.abs(square.dataset['x'] - player2X) <= 3) && (square.dataset['y'] === player2Y);
+  const secondCondition = (Math.abs(square.dataset['y'] - player2Y) <= 3) && (square.dataset['x'] === player2X);
+  if (firstCondition || secondCondition) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function movePlayer2(){
   $('.grid-item').click(function(){
     let player2X = 0;
     let player2Y = 0;
     $('.grid-item').each(function(){
-      const element = $(this);
-      if (element.hasClass("player-2")) {
+      if ($(this).hasClass("player-2")) {
         player2X = this.dataset['x'];
         player2Y = this.dataset['y'];
       }
     })
     // Make sure is within distance
-    if ((Math.abs(this.dataset['x'] - player2X) <= 3) && (this.dataset['y'] === player2Y)
-        || (Math.abs(this.dataset['y'] - player2Y) <= 3) && (this.dataset['x'] === player2X)) {
-        const element = $(this);
-        if (!element.hasClass("block") && !element.hasClass("player-1") && !player1Turn){
+        const $element = $(this);
+        const element = this;
+        console.log(isSquareAvailable(this));
+        const isSquareAvailable = isSquareAvailable(element);
+        if (isSquareAvailable && !$element.hasClass("block") && !$element.hasClass("player-1") && !player1Turn){
+          if ($element.hasClass("weapon")){
+            alert("Tengo arma!");
+            $element.removeClass("weapon");
+          }
           playerReset("player-2");
-          element.addClass("player-2");
-          element.addClass("unavailable");
+          $element.addClass("player-2");
+          $element.addClass("unavailable");
           console.log("pla2XY",player2X,player2Y)
           playerEncounter2(this.dataset['y'], this.dataset['x']);
           player1Turn = !player1Turn;
         }
-    }
   });
 }
-  
+
+
 
 
 // What happens when players enounter each other
-function playerEncounter(player1Y, player1X){
+function playerEncounter(player1Y, player1X,){
   let player2X = 0;
   let player2Y = 0;
   $('.grid-item').each(function(){

@@ -2,17 +2,24 @@ html {
   outline: 1px dotted red;
 }
 
+body {
+  text-align: center;
+  font-family: arial;
+}
+
 .grid-container {
   display: grid;
   max-width: 1000px;
   max-height: 1000px;
   position: relative;
   grid-template: repeat(10, 1fr)/repeat(10, 1fr);
+  margin: 10px auto;
+  border: 2px solid black;
 }
 
 .grid-item {
   outline: 1px solid rgba(0,0,0,0.5);
-  background: grey;
+  background: teal;
   width: 100px;
   height: 100px;
 }
@@ -29,7 +36,8 @@ html {
   width: 60px;
   height: 60px;
   border-radius: -10px;
-  background: teal;
+  background: yellow;
+  margin: auto;
 }
 
 .player-1 {
@@ -37,6 +45,7 @@ html {
   height: 90px;
   border-radius: 50px;
   background: blue;
+  margin: auto;
 }
 
 .player-2 {
@@ -44,4 +53,19 @@ html {
   height: 90px;
   border-radius: 50px;
   background: red;
+  margin: auto;
+}
+
+.btn {
+  color: white;
+  border-radius: 7px;
+  font-size: 15px;
+}
+
+#start-btn {
+  background: rgb(50, 177, 50);
+}
+
+#reset-btn {
+  background: rgb(192, 24, 24);
 }
