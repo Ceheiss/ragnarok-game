@@ -1,8 +1,40 @@
+// players
+const player1 = {
+  position: {
+    x: 0,
+    y: 0
+  }
+}
+
+const player2 = {
+  position: {
+    x: 0,
+    y: 0
+  }
+}
+
 // Generate grid with blocks
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
     $('.grid-container').append('<div class="grid-item" data-y='+i+' data-x='+j+'>Block at x='+j+' y='+i+'</div>')
   }
+}
+
+function getPlayerPosition(){
+  $('.grid-item').each(function(){
+    const element = $(this);
+    // I take the coordinates of the
+    if (element.hasClass("player-1")) {
+      player1.position.x = this.dataset['x'];
+      console.log("player1 X position is: ", player1.position.x)
+      player1.position.y = this.dataset['y'];
+      console.log("player1 Y position is: ", player1.position.y)
+    }
+    if (element.hasClass("player-2")) {
+      player2.position.x = this.dataset['x'];
+      player2.position.y = this.dataset['y'];
+    }
+  })
 }
 
 // Generate random numbers
@@ -29,7 +61,7 @@ function playerReset(player) {
 }
 
 // This functions helps blocks, weapons and players find an available aquare in the board
-function selectElements(className) {
+function placeElements(className) {
   const random_x = generateRandomNum();
   const random_y = generateRandomNum();
   $('.grid-item').each(function(){
@@ -40,10 +72,17 @@ function selectElements(className) {
         console.log("available");
         element.addClass(className);
         element.addClass("unavailable");
+        if (className === "player-1") {
+          player1.position.x = this.dataset['x'];
+          player1.position.y = this.dataset['y'];
+        } else if (className === "player-1"){
+          player2.position.x = this.dataset['x'];
+          player2.position.y = this.dataset['y'];
+        }
       } else {
         console.log("unavailable");
         // Function calls itself recursively until it finds available space
-        selectElements(className);
+        placeElements(className);
       }
     }
   })
@@ -61,16 +100,16 @@ function generateGame(){
   reset();
   // Anonymous functions so I can pass the parameters to the function without calling it
   generate(function(){
-    selectElements("block");
+    placeElements("block");
   },12)
   generate(function(){
-    selectElements("weapon");
+    placeElements("weapon");
   },4)
   generate(function(){
-    selectElements("player-1");
+    placeElements("player-1");
   },1)
   generate(function(){
-    selectElements("player-2");
+    placeElements("player-2");
   },1)
   movePlayer1();
   movePlayer2();
@@ -100,19 +139,9 @@ Pseudo Code para le movimiento:
 */
 function movePlayer1(){
   $('.grid-item').click(function(){
-    let player1X = 0;
-    let player1Y = 0;
-    $('.grid-item').each(function(){
-      const element = $(this);
-      // I take the coordinates of the player
-      if (element.hasClass("player-1")) {
-        player1X = this.dataset['x'];
-        player1Y = this.dataset['y'];
-      }
-    })
     // Make sure is within distance
-    if ((Math.abs(this.dataset['x'] - player1X) <= 3) && (this.dataset['y'] === player1Y)
-        || (Math.abs(this.dataset['y'] - player1Y) <= 3) && (this.dataset['x'] === player1X)) {
+    if ((Math.abs(this.dataset['x'] - player1.position.x) <= 3) && (this.dataset['y'] === player1.position.y)
+        || (Math.abs(this.dataset['y'] - player1.position.y) <= 3) && (this.dataset['x'] === player1.position.x)) {
         const element = $(this);
         if (!element.hasClass("block") && !element.hasClass("player-2") && player1Turn){
           if (element.hasClass("weapon")){
@@ -122,66 +151,43 @@ function movePlayer1(){
           playerReset("player-1");
           element.addClass("player-1");
           element.addClass("unavailable");
-          console.log("pla1XY",player1X,player1Y)
-          playerEncounter(this.dataset['y'], this.dataset['x']);
+          playerEncounter(player1.position.x, player1.position.y, player2.position.x, player2.position.y);
           player1Turn = !player1Turn;
         }
-    }
+      }
+      getPlayerPosition();
   });
-}
-
-function isSquareAvailable(square) {
-  const firstCondition = (Math.abs(square.dataset['x'] - player2X) <= 3) && (square.dataset['y'] === player2Y);
-  const secondCondition = (Math.abs(square.dataset['y'] - player2Y) <= 3) && (square.dataset['x'] === player2X);
-  if (firstCondition || secondCondition) {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 function movePlayer2(){
   $('.grid-item').click(function(){
-    let player2X = 0;
-    let player2Y = 0;
-    $('.grid-item').each(function(){
-      if ($(this).hasClass("player-2")) {
-        player2X = this.dataset['x'];
-        player2Y = this.dataset['y'];
-      }
-    })
     // Make sure is within distance
-        const $element = $(this);
-        const element = this;
-        console.log(isSquareAvailable(this));
-        const isSquareAvailable = isSquareAvailable(element);
-        if (isSquareAvailable && !$element.hasClass("block") && !$element.hasClass("player-1") && !player1Turn){
-          if ($element.hasClass("weapon")){
+    if ((Math.abs(this.dataset['x'] - player2.position.x) <= 3) && (this.dataset['y'] === player2.position.y)
+        || (Math.abs(this.dataset['y'] - player2.position.y) <= 3) && (this.dataset['x'] === player2.position.x)) {
+        const element = $(this);
+        if (!element.hasClass("block") && !element.hasClass("player-1") && !player1Turn){
+          if (element.hasClass("weapon")){
             alert("Tengo arma!");
-            $element.removeClass("weapon");
+            element.removeClass("weapon");
           }
           playerReset("player-2");
-          $element.addClass("player-2");
-          $element.addClass("unavailable");
-          console.log("pla2XY",player2X,player2Y)
-          playerEncounter2(this.dataset['y'], this.dataset['x']);
+          element.addClass("player-2");
+          element.addClass("unavailable");
+          //playerEncounter2(this.dataset['y'], this.dataset['x']);
           player1Turn = !player1Turn;
         }
+    }
+    getPlayerPosition();
   });
 }
-
-
+  
 
 
 // What happens when players enounter each other
-function playerEncounter(player1Y, player1X,){
-  let player2X = 0;
-  let player2Y = 0;
+function playerEncounter(player1Y, player1X, player2X, player2Y){
   $('.grid-item').each(function(){
     const element = $(this);
     if (element.hasClass("player-2")) {
-      player2X = this.dataset['x'];
-      player2Y = this.dataset['y'];
       console.log("player2xy",player2X,player2Y);
       if (player1Y === player2Y && (Math.abs(player1X - player2X) === 1)
           || player1X === player2X && (Math.abs(player1Y - player2Y) === 1)){
