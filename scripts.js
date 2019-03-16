@@ -151,11 +151,10 @@ function movePlayer1(){
           playerReset("player-1");
           element.addClass("player-1");
           element.addClass("unavailable");
-          playerEncounter(player1.position.x, player1.position.y, player2.position.x, player2.position.y);
+          playerEncounter();
           player1Turn = !player1Turn;
         }
       }
-      getPlayerPosition();
   });
 }
 
@@ -173,43 +172,20 @@ function movePlayer2(){
           playerReset("player-2");
           element.addClass("player-2");
           element.addClass("unavailable");
-          //playerEncounter2(this.dataset['y'], this.dataset['x']);
+          playerEncounter()
           player1Turn = !player1Turn;
         }
     }
-    getPlayerPosition();
   });
 }
   
-
-
-// What happens when players enounter each other
-function playerEncounter(player1Y, player1X, player2X, player2Y){
-  $('.grid-item').each(function(){
-    const element = $(this);
-    if (element.hasClass("player-2")) {
-      console.log("player2xy",player2X,player2Y);
-      if (player1Y === player2Y && (Math.abs(player1X - player2X) === 1)
-          || player1X === player2X && (Math.abs(player1Y - player2Y) === 1)){
-        alert("Hola Loco, time to fight");
-      }
+// What happens when players encounter each other
+function playerEncounter(){
+    getPlayerPosition()
+    console.log("X",(Math.abs(player1.position.x - player2.position.x)));
+    console.log("Y",(Math.abs(player1.position.y - player2.position.y)));
+    if ((Math.abs(player1.position.x - player2.position.x)) === 0 && (Math.abs(player2.position.y - player1.position.y) === 1) ||
+    player1.position.y === player2.position.y && (Math.abs(player1.position.x - player2.position.x) === 1)){
+      alert(`Hola loco, time to fight`);
     }
-  })
-}
-
-function playerEncounter2(player2Y, player2X){
-  let player1X = 0;
-  let player1Y = 0;
-  $('.grid-item').each(function(){
-    const element = $(this);
-    if (element.hasClass("player-1")) {
-      player1X = this.dataset['x'];
-      player1Y = this.dataset['y'];
-      console.log("player1xy",player1X,player1Y);
-      if (player1Y === player2Y && (Math.abs(player1X - player2X) === 1)
-          || player1X === player2X && (Math.abs(player1Y - player2Y) === 1)){
-        alert("Hola Loco, time to fight");
-      }
-    }
-  })
 }
