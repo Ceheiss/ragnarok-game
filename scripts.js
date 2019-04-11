@@ -3,15 +3,21 @@ const player1 = {
   position: {
     x: 0,
     y: 0
-  }
+  },
+  hasWeapon: false
 }
 
 const player2 = {
   position: {
     x: 0,
     y: 0
-  }
+  },
+  hasWeapon: false
 }
+
+// Generate random numbers
+let playerTurn = true; // pass this as an object property
+const generateRandomNum = () => Math.floor(Math.random() * 10);
 
 // Generate grid with blocks
 for (let i = 0; i < 10; i++) {
@@ -36,10 +42,6 @@ function getPlayerPosition(){
     }
   })
 }
-
-// Generate random numbers
-let player1Turn = true;
-const generateRandomNum = () => Math.floor(Math.random() * 10);
 
 // Clean all the board
 function reset() {
@@ -75,7 +77,7 @@ function placeElements(className) {
         if (className === "player-1") {
           player1.position.x = this.dataset['x'];
           player1.position.y = this.dataset['y'];
-        } else if (className === "player-1"){
+        } else if (className === "player-2"){
           player2.position.x = this.dataset['x'];
           player2.position.y = this.dataset['y'];
         }
@@ -111,8 +113,8 @@ function generateGame(){
   generate(function(){
     placeElements("player-2");
   },1)
-  movePlayer1();
-  movePlayer2();
+  movePlayer(player1);
+  movePlayer(player2);
 }
 
 // Blocks console.log their location
@@ -130,53 +132,58 @@ $('#start-btn').click(generateGame)
 $('#reset-btn').click(reset)
 
 
-/*
-Pseudo Code para le movimiento:
-1. iluminar los posibles movimientos
-2. if (box !unavailable AND (distancia de this.x < 3 AND this.y estable) OR (distancia de this.y < 3 AND this.x estable))
-4. Avanzar a donde se hizo el click
-5. Evitar que pase sobre bloque
-*/
-function movePlayer1(){
+function movePlayer(player){
   $('.grid-item').click(function(){
     // Make sure is within distance
-    if ((Math.abs(this.dataset['x'] - player1.position.x) <= 3) && (this.dataset['y'] === player1.position.y)
-        || (Math.abs(this.dataset['y'] - player1.position.y) <= 3) && (this.dataset['x'] === player1.position.x)) {
+    if (isInDistance(player, this)) {
         const element = $(this);
-        if (!element.hasClass("block") && !element.hasClass("player-2") && player1Turn){
+        if (player === player2) {
+          if (!element.hasClass("block") && 
+          (!element.hasClass("player-1") && !element.hasClass("player-2"))
+          && !playerTurn){
+            if (element.hasClass("weapon")){
+              alert("weapon!");
+              element.removeClass("weapon");
+              player.hasWeapon = true;
+            }
+            playerReset("player-2");
+            element.addClass("player-2");
+            element.addClass("unavailable");
+            playerEncounter()
+            playerTurn = !playerTurn;
+            }
+        } 
+        if (player === player1) {
+          if (!element.hasClass("block") && 
+          (!element.hasClass("player-1") && !element.hasClass("player-2"))
+            && playerTurn){
           if (element.hasClass("weapon")){
-            alert("Tengo arma!");
+            alert("weapon!");
             element.removeClass("weapon");
+            player.hasWeapon = true;
           }
           playerReset("player-1");
           element.addClass("player-1");
           element.addClass("unavailable");
           playerEncounter();
-          player1Turn = !player1Turn;
+          playerTurn = !playerTurn;
         }
-      }
-  });
-}
-
-function movePlayer2(){
-  $('.grid-item').click(function(){
-    // Make sure is within distance
-    if ((Math.abs(this.dataset['x'] - player2.position.x) <= 3) && (this.dataset['y'] === player2.position.y)
-        || (Math.abs(this.dataset['y'] - player2.position.y) <= 3) && (this.dataset['x'] === player2.position.x)) {
-        const element = $(this);
-        if (!element.hasClass("block") && !element.hasClass("player-1") && !player1Turn){
-          if (element.hasClass("weapon")){
-            alert("Tengo arma!");
-            element.removeClass("weapon");
-          }
-          playerReset("player-2");
-          element.addClass("player-2");
-          element.addClass("unavailable");
-          playerEncounter()
-          player1Turn = !player1Turn;
         }
     }
   });
+}
+
+// I need to reference all the elements that are "inDistance"
+// To determine if they have block or player class, if they do
+// movement is not possible
+function isInDistance (player, block) {
+  const firstCondition = (Math.abs(block.dataset['x'] - player.position.x) <= 3)
+  && (block.dataset['y'] === player.position.y)
+
+  const secondCondition = (Math.abs(block.dataset['y'] - player.position.y) <= 3) 
+  && (block.dataset['x'] === player.position.x)
+
+  return (firstCondition || secondCondition)
 }
   
 // What happens when players encounter each other
@@ -184,8 +191,15 @@ function playerEncounter(){
     getPlayerPosition()
     console.log("X",(Math.abs(player1.position.x - player2.position.x)));
     console.log("Y",(Math.abs(player1.position.y - player2.position.y)));
-    if ((Math.abs(player1.position.x - player2.position.x)) === 0 && (Math.abs(player2.position.y - player1.position.y) === 1) ||
-    player1.position.y === player2.position.y && (Math.abs(player1.position.x - player2.position.x) === 1)){
-      alert(`Hola loco, time to fight`);
+    if ((Math.abs(player1.position.x - player2.position.x)) === 0 
+        && (Math.abs(player2.position.y - player1.position.y) === 1) 
+        ||
+        player1.position.y === player2.position.y 
+        && (Math.abs(player1.position.x - player2.position.x) === 1)){
+          alert(`time to fight`);
     }
 }
+
+
+
+
