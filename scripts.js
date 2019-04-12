@@ -19,6 +19,7 @@ const player2 = {
 let playerTurn = true; // pass this as an object property
 const generateRandomNum = () => Math.floor(Math.random() * 10);
 
+
 // Generate grid with blocks
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
@@ -32,9 +33,9 @@ function getPlayerPosition(){
     // I take the coordinates of the
     if (element.hasClass("player-1")) {
       player1.position.x = this.dataset['x'];
-      console.log("player1 X position is: ", player1.position.x)
+      //console.log("player1 X position is: ", player1.position.x)
       player1.position.y = this.dataset['y'];
-      console.log("player1 Y position is: ", player1.position.y)
+      //console.log("player1 Y position is: ", player1.position.y)
     }
     if (element.hasClass("player-2")) {
       player2.position.x = this.dataset['x'];
@@ -52,6 +53,7 @@ function reset() {
     element.removeClass("player-1");
     element.removeClass("player-2");
     element.removeClass("unavailable");
+    element.removeClass("possible");
   })
 }
 
@@ -59,9 +61,28 @@ function playerReset(player) {
   $('.grid-item').each(function(){
     const element = $(this);
     element.removeClass(player);
+    element.removeClass("possible");
   })
 }
 
+function squareNotOccupied (element) {
+  return (
+        !element.hasClass("block")
+        && !element.hasClass("player-1")
+        && !element.hasClass("player-2")
+  )
+}
+
+function possiblePath(player) {
+  $('.grid-item').each(function(){
+    const element = $(this);
+    if (isInDistance(player, this)
+        && squareNotOccupied(element)
+        ){
+      element.addClass("possible");
+    }
+  })
+}
 // This functions helps blocks, weapons and players find an available aquare in the board
 function placeElements(className) {
   const random_x = generateRandomNum();
@@ -71,7 +92,7 @@ function placeElements(className) {
     //console.log("$(this), this",$(this), this);
     if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
       if (!(this.classList.contains("unavailable"))){
-        console.log("available");
+        //console.log("available");
         element.addClass(className);
         element.addClass("unavailable");
         if (className === "player-1") {
@@ -81,8 +102,11 @@ function placeElements(className) {
           player2.position.x = this.dataset['x'];
           player2.position.y = this.dataset['y'];
         }
+      } else if (playerEncounter()) {
+          placeElements(className);
+          console.log("oops, early encounter")
       } else {
-        console.log("unavailable");
+        //console.log("unavailable");
         // Function calls itself recursively until it finds available space
         placeElements(className);
       }
@@ -115,6 +139,7 @@ function generateGame(){
   },1)
   movePlayer(player1);
   movePlayer(player2);
+  pathHighlight();
 }
 
 // Blocks console.log their location
@@ -122,6 +147,13 @@ $('.grid-item').click(function(){
   console.log(`Coordenada X es ${this.dataset['x']}\nCoordenada Y es ${this.dataset['y']}`);
 })
 
+function pathHighlight() {
+    if (playerTurn) {
+      possiblePath(player1)
+    } else {
+      possiblePath(player2)
+    }
+}
 // To move character, put conditionals to only move within one block distance and
 // where there aren't barriers.
 // Also need to toggle (only can one element have the 'player-1' class a time)
@@ -134,13 +166,12 @@ $('#reset-btn').click(reset)
 
 function movePlayer(player){
   $('.grid-item').click(function(){
+  pathHighlight()
     // Make sure is within distance
     if (isInDistance(player, this)) {
         const element = $(this);
-        if (player === player2) {
-          if (!element.hasClass("block") && 
-          (!element.hasClass("player-1") && !element.hasClass("player-2"))
-          && !playerTurn){
+        if (player === player2 && squareNotOccupied(element)) {
+          if (!playerTurn){
             if (element.hasClass("weapon")){
               alert("weapon!");
               element.removeClass("weapon");
@@ -153,10 +184,8 @@ function movePlayer(player){
             playerTurn = !playerTurn;
             }
         } 
-        if (player === player1) {
-          if (!element.hasClass("block") && 
-          (!element.hasClass("player-1") && !element.hasClass("player-2"))
-            && playerTurn){
+        if (player === player1 && squareNotOccupied(element)) {
+          if (playerTurn){
           if (element.hasClass("weapon")){
             alert("weapon!");
             element.removeClass("weapon");
@@ -167,9 +196,10 @@ function movePlayer(player){
           element.addClass("unavailable");
           playerEncounter();
           playerTurn = !playerTurn;
-        }
+          }
         }
     }
+    pathHighlight()
   });
 }
 
@@ -188,18 +218,13 @@ function isInDistance (player, block) {
   
 // What happens when players encounter each other
 function playerEncounter(){
-    getPlayerPosition()
-    console.log("X",(Math.abs(player1.position.x - player2.position.x)));
-    console.log("Y",(Math.abs(player1.position.y - player2.position.y)));
-    if ((Math.abs(player1.position.x - player2.position.x)) === 0 
-        && (Math.abs(player2.position.y - player1.position.y) === 1) 
-        ||
-        player1.position.y === player2.position.y 
-        && (Math.abs(player1.position.x - player2.position.x) === 1)){
-          alert(`time to fight`);
-    }
+  getPlayerPosition()
+  //console.log("X",(Math.abs(player1.position.x - player2.position.x)));
+  //console.log("Y",(Math.abs(player1.position.y - player2.position.y)));
+  return ((Math.abs(player1.position.x - player2.position.x)) === 0 
+      && (Math.abs(player2.position.y - player1.position.y) === 1) 
+      ||
+      player1.position.y === player2.position.y 
+      && (Math.abs(player1.position.x - player2.position.x) === 1))   
 }
-
-
-
 

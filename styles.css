@@ -7,6 +7,13 @@ body {
   font-family: arial;
 }
 
+.possible {
+  background: rgba(0,139,139, 0.7) !important;
+  color: red;
+  width: 100px;
+  height: 100px;
+}
+
 .grid-container {
   display: grid;
   max-width: 1000px;
