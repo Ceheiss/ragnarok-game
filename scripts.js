@@ -1,4 +1,28 @@
 /*=================================== Player Objects ================================== */
+// weapons
+const weapons = 
+ [
+    {
+      name: "Banana Blaster",
+      damage: 40,
+      className: "weapon-1"
+    },
+    {
+      name: "Lemon Pie",
+      damage: 50,
+      className: "weapon-2"
+    },
+    {
+      name: "Rubber Duck",
+      damage: 50,
+      className: "weapon-3"
+    },
+    {
+      name: "Goblin",
+      damage: 70,
+      className: "weapon-4"
+    },
+  ]
 
 // players
 const player1 = {
@@ -6,7 +30,9 @@ const player1 = {
     x: 0,
     y: 0
   },
-  hasWeapon: false
+  health: 200,
+  hasWeapon: false,
+  currentWeapon: weapons[0]
 }
 
 const player2 = {
@@ -14,8 +40,13 @@ const player2 = {
     x: 0,
     y: 0
   },
-  hasWeapon: false
+  health: 200,
+  hasWeapon: false,
+  currentWeapon: weapons[0]
 }
+
+
+
 /*=================================== Build The Game ================================== */
 
 // Generate random numbers
@@ -50,7 +81,13 @@ function placeElements(className) {
         } else if (className === "player-2"){
           player2.position.x = this.dataset['x'];
           player2.position.y = this.dataset['y'];
+        } else if (className === "weapon-1" ||
+                   className === "weapon-2"||
+                   className === "weapon-3"||
+                   className === "weapon-4"){
+          element.addClass("weapon");
         }
+
         if(playerEncounter()){
           console.log("Early Encounter")
           playerReset(className)
@@ -72,8 +109,14 @@ generate(function(){
   placeElements("block");
 },12)
 generate(function(){
-  placeElements("weapon");
-},4)
+  placeElements("weapon-2");
+},1)
+generate(function(){
+  placeElements("weapon-3");
+},1)
+generate(function(){
+  placeElements("weapon-4");
+},1)
 generate(function(){
   placeElements("player-1");
 },1)
@@ -105,8 +148,10 @@ function movePlayer(player){
 $('.grid-item').click(function(){
 pathHighlight()
 const element = $(this);
+const block = this;
   // Make sure is within distance
   if (element.hasClass("possible")) {
+      weaponChecker(block, player)
       if (player === player2) {
         if (!playerTurn){
           handleWeapon(element, player);
@@ -153,6 +198,10 @@ function reset() {
     const element = $(this);
     element.removeClass("block");
     element.removeClass("weapon");
+    element.removeClass("weapon-1");
+    element.removeClass("weapon-2");
+    element.removeClass("weapon-3");
+    element.removeClass("weapon-4");
     element.removeClass("player-1");
     element.removeClass("player-2");
     element.removeClass("unavailable");
@@ -196,7 +245,7 @@ function possiblePath(player) {
         $('.possible').each(function(){
           const element = $(this);
           const block = this;
-          if (block.dataset['x'] > occupiedObject .dataset['x']){
+          if (block.dataset['x'] > occupiedObject.dataset['x']){
             element.removeClass("possible")
           }
         })
@@ -209,7 +258,7 @@ function possiblePath(player) {
         $('.possible').each(function(){
           const element = $(this);
           const block = this;
-          if (block.dataset['x'] < occupiedObject .dataset['x']){
+          if (block.dataset['x'] < occupiedObject.dataset['x']){
             element.removeClass("possible")
           }
         })
@@ -222,7 +271,7 @@ function possiblePath(player) {
         $('.possible').each(function(){
           const element = $(this);
           const block = this;
-          if (block.dataset['y'] > occupiedObject .dataset['y']){
+          if (block.dataset['y'] > occupiedObject.dataset['y']){
             element.removeClass("possible")
           }
         })
@@ -235,7 +284,7 @@ function possiblePath(player) {
         $('.possible').each(function(){
           const element = $(this);
           const block = this;
-          if (block.dataset['y'] < occupiedObject .dataset['y']){
+          if (block.dataset['y'] < occupiedObject.dataset['y']){
             element.removeClass("possible")
           }
         })
@@ -260,9 +309,27 @@ function isInDistance (player, block) {
 /*=================================== Player Encounters ================================== */
 
 function handleWeapon (element, player) {
-  if (element.hasClass("weapon")){
-    alert("weapon!");
+  if (element.hasClass("weapon-1")){
+    alert("weapon 1, the oyster seasoner!");
     element.removeClass("weapon");
+    element.removeClass("weapon-1");
+    // remove current player weapon
+    // add current player weapon to the element
+    player.hasWeapon = true;
+  } else if (element.hasClass("weapon-2")){
+    alert("weapon 2, the banana blaster!");
+    element.removeClass("weapon");
+    element.removeClass("weapon-2");
+    player.hasWeapon = true;
+  } else if (element.hasClass("weapon-3")){
+    alert("weapon 3, the angry shoelace!");
+    element.removeClass("weapon");
+    element.removeClass("weapon-3");
+    player.hasWeapon = true;
+  } else  if (element.hasClass("weapon-4")){
+    alert("weapon 4, the fierce maccaroni!");
+    element.removeClass("weapon");
+    element.removeClass("weapon-4");
     player.hasWeapon = true;
   }
 }
@@ -283,3 +350,98 @@ function handleFight(){
   }
 }
  
+function weaponChecker(block, player){
+  checkSmallerX (block, player)
+  checkSmallerY (block, player)
+  checkLargerX (block, player)
+  checkLargerY (block, player)
+}
+
+function checkSmallerX (block, player){
+  if (block.dataset['x'] < player.position.x){
+    $('.possible').each(function(){
+      const element = $(this);
+      const innerBlock = this;
+      if((innerBlock.dataset['x'] < player.position.x)
+         && (innerBlock.dataset['y'] == player.position.y)
+         && innerBlock.dataset['x'] > block.dataset['x']){
+        if(element.hasClass("weapon")){
+          weaponChange(element, player)
+        }
+      }
+    })
+  }
+}
+
+function checkLargerX (block, player) {
+  if (block.dataset['x'] > player.position.x){
+    $('.possible').each(function(){
+      const element = $(this);
+      const innerBlock = this;
+      if((innerBlock.dataset['x'] > player.position.x)
+         && (innerBlock.dataset['y'] == player.position.y)
+         && innerBlock.dataset['x'] < block.dataset['x']){
+        if(element.hasClass("weapon")){
+          weaponChange(element, player)
+        }
+      }
+    })
+  }
+}
+
+function checkSmallerY (block, player) {
+  if (block.dataset['y'] < player.position.y){
+    $('.possible').each(function(){
+      const element = $(this);
+      const innerBlock = this;
+      if((innerBlock.dataset['y'] < player.position.y)
+         && (innerBlock.dataset['x'] == player.position.x)
+         && innerBlock.dataset['y'] > block.dataset['y']){
+        if(element.hasClass("weapon")){
+          weaponChange(element, player)
+        }
+      }
+    })
+  }
+}
+
+function checkLargerY (block, player) {
+  if (block.dataset['y'] > player.position.y){
+    $('.possible').each(function(){
+      const element = $(this);
+      const innerBlock = this;
+      if((innerBlock.dataset['y'] > player.position.y)
+         && (innerBlock.dataset['x'] == player.position.x)
+         && innerBlock.dataset['y'] < block.dataset['y']){
+        if(element.hasClass("weapon")){
+          weaponChange(element, player)
+        }
+      }
+    })
+  }
+}
+
+function weaponChange(element, player){
+  let playerWeapon = player.currentWeapon
+  if(element.hasClass("weapon-1")){
+    element.removeClass("weapon-1")
+    element.addClass(playerWeapon.className)
+    player.currentWeapon = weapons[0]
+    alert(" ahora tiene weapon-1")
+  } else if(element.hasClass("weapon-2")){
+    element.removeClass("weapon-2")
+    element.addClass(playerWeapon.className)
+    player.currentWeapon = weapons[1]
+    alert(" ahora tiene weapon-2")
+  } else if(element.hasClass("weapon-3")){
+    element.removeClass("weapon-3")
+    element.addClass(playerWeapon.className)
+    player.currentWeapon = weapons[2]
+    alert(" ahora tiene weapon-3")
+  } else if(element.hasClass("weapon-4")){
+    element.removeClass("weapon-4")
+    element.addClass(playerWeapon.className)
+    player.currentWeapon = weapons[3]
+    alert(" ahora tiene weapon-4")
+  }
+}

@@ -9,9 +9,14 @@ body {
 
 .possible {
   background: rgba(0,139,139, 0.7) !important;
-  color: red;
   width: 70px;
   height: 70px;
+  transition: 0.1s ease-in;
+  cursor: pointer;
+}
+
+.possible:hover{
+  background: pink !important;
 }
 
 .blue {
@@ -47,8 +52,23 @@ body {
   width: 40px;
   height: 40px;
   border-radius: -10px;
-  background: yellow;
   margin: auto;
+}
+
+.weapon-1 {
+  background: gold!important;
+}
+
+.weapon-2 {
+  background: purple!important;
+}
+
+.weapon-3 {
+  background: peru!important;
+}
+
+.weapon-4 {
+  background: springgreen!important;
 }
 
 .player-1 {
