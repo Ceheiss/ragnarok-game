@@ -309,29 +309,7 @@ function isInDistance (player, block) {
 /*=================================== Player Encounters ================================== */
 
 function handleWeapon (element, player) {
-  if (element.hasClass("weapon-1")){
-    alert("weapon 1, the oyster seasoner!");
-    element.removeClass("weapon");
-    element.removeClass("weapon-1");
-    // remove current player weapon
-    // add current player weapon to the element
-    player.hasWeapon = true;
-  } else if (element.hasClass("weapon-2")){
-    alert("weapon 2, the banana blaster!");
-    element.removeClass("weapon");
-    element.removeClass("weapon-2");
-    player.hasWeapon = true;
-  } else if (element.hasClass("weapon-3")){
-    alert("weapon 3, the angry shoelace!");
-    element.removeClass("weapon");
-    element.removeClass("weapon-3");
-    player.hasWeapon = true;
-  } else  if (element.hasClass("weapon-4")){
-    alert("weapon 4, the fierce maccaroni!");
-    element.removeClass("weapon");
-    element.removeClass("weapon-4");
-    player.hasWeapon = true;
-  }
+  weaponChange(element, player)
 }
   
 // What happens when players encounter each other

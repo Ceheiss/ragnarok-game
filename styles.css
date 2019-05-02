@@ -19,10 +19,6 @@ body {
   background: pink !important;
 }
 
-.blue {
-  color: blue;
-}
-
 .grid-container {
   display: grid;
   max-width: 700px;
@@ -75,7 +71,7 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 50px;
-  background: blue;
+  background: blue!important;
   margin: auto;
 }
 
@@ -83,7 +79,7 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 50px;
-  background: red;
+  background: red!important;
   margin: auto;
 }
 
