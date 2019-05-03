@@ -8,11 +8,42 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Table Game</h1>
-  <button id="start-btn" class="btn">Start</button>
-  <button id="reset-btn" class="btn">Reset</button>
-  <div class="grid-container"></div>
-  <div id="element"></div>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1>Time to Fight</h1>
+        <h2>Players take turns to attack or defend, choose wisely</h2>
+        <button>Attack!</button>
+        <button>Defend!</button>
+      </div>
+  </div>
+  <div id="game">
+    <div id="player1-box" class="stats-box">
+      <h2>Player 1</h2>
+      <img class="player-img" src="https://www.cheapbowlingballs.com/Assets/Balls/OnTheBall/Custom/Backround_Design/Blue.jpg"/>
+      <h3>Health: <span id="player1-health"></span></h3>
+      <h3>Weapon: <span id="player1-weapon"></span></h3>
+      <h3>Damage: <span id="player1-damage"></span></h3>
+    </div>
+    <div>
+      <h1>Table Game</h1>
+      <button id="start-btn" class="btn">Start</button>
+      <button id="reset-btn" class="btn">Reset</button>
+      <div class="grid-container"></div>
+      <div id="element"></div>
+    </div>
+    <div id="player2-box" class="stats-box">
+      <h2>Player 2</h2>
+      <img class="player-img" src="https://townofmountainvillage.com/media/rotary-red-ball.jpg"/>
+      <h3>Health: <span id="player2-health"></span></h3>
+      <h3>Weapon: <span id="player2-weapon"></span></h3>
+      <h3>Damage: <span id="player2-damage"></span></h3>
+    </div>
+  </div> 
+ 
+ 
 
   <script
   src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

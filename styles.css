@@ -7,6 +7,14 @@ body {
   font-family: arial;
 }
 
+#game{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  text-align: center;
+}
+
+
 .possible {
   background: rgba(0,139,139, 0.7) !important;
   width: 70px;
@@ -89,10 +97,65 @@ body {
   font-size: 15px;
 }
 
+.player-img{
+  max-width: 150px;
+}
+
+.stats-box {
+  border: 2px solid grey;
+  background: #999;
+  margin: auto 5px;
+  padding: 15px;
+  height: 200%;
+  min-width: 250px;
+}
+
 #start-btn {
   background: rgb(50, 177, 50);
 }
 
 #reset-btn {
   background: rgb(192, 24, 24);
+}
+
+/*=========== Modal Window ==============*/
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color:forestgreen;
+  font-family: arial;
+  color: #eee;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }

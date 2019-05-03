@@ -126,6 +126,8 @@ generate(function(){
 movePlayer(player1);
 movePlayer(player2);
 pathHighlight();
+displayStats(player1);
+displayStats(player2);
 }
 
 // Event handlers
@@ -151,23 +153,26 @@ const element = $(this);
 const block = this;
   // Make sure is within distance
   if (element.hasClass("possible")) {
-      weaponChecker(block, player)
       if (player === player2) {
         if (!playerTurn){
+          weaponChecker(block, player)
           handleWeapon(element, player);
           playerReset("player-2");
           element.addClass("player-2");
           handleFight()
           playerTurn = !playerTurn;
+          displayStats(player)
           }
       } 
       if (player === player1) {
         if (playerTurn){
+          weaponChecker(block, player)
           handleWeapon(element, player);
           playerReset("player-1");
           element.addClass("player-1");
           handleFight()
           playerTurn = !playerTurn;
+          displayStats(player)
         }
       }
   }
@@ -206,6 +211,7 @@ function reset() {
     element.removeClass("player-2");
     element.removeClass("unavailable");
     element.removeClass("possible");
+    statReset()
   })
 }
 
@@ -324,7 +330,7 @@ function playerEncounter(){
 
 function handleFight(){
   if (playerEncounter()){
-    alert("Time to fight!")
+    modal.style.display = "block";
   }
 }
  
@@ -358,7 +364,7 @@ function checkLargerX (block, player) {
       const innerBlock = this;
       if((innerBlock.dataset['x'] > player.position.x)
          && (innerBlock.dataset['y'] == player.position.y)
-         && innerBlock.dataset['x'] < block.dataset['x']){
+         && (innerBlock.dataset['x'] < block.dataset['x'])){
         if(element.hasClass("weapon")){
           weaponChange(element, player)
         }
@@ -421,5 +427,46 @@ function weaponChange(element, player){
     element.addClass(playerWeapon.className)
     player.currentWeapon = weapons[3]
     alert(" ahora tiene weapon-4")
+  }
+}
+
+function displayStats(player) {
+  const weapon = player.currentWeapon.name;
+  const health = player.health;
+  const damage = player.currentWeapon.damage;
+  if (player === player1){
+    document.getElementById("player1-weapon").innerHTML = weapon;
+    document.getElementById("player1-health").innerHTML = health;
+    document.getElementById("player1-damage").innerHTML = damage;
+  } else {
+    document.getElementById("player2-weapon").innerHTML = weapon;
+    document.getElementById("player2-health").innerHTML = health;
+    document.getElementById("player2-damage").innerHTML = damage;
+  }
+}
+
+function statReset(){
+  document.getElementById("player1-weapon").innerHTML = "";
+  document.getElementById("player1-health").innerHTML = "";
+  document.getElementById("player1-damage").innerHTML = "";
+  document.getElementById("player2-weapon").innerHTML = "";
+  document.getElementById("player2-health").innerHTML = "";
+  document.getElementById("player2-damage").innerHTML = "";
+}
+
+
+/*=========== MODAL STUFF ==============*/
+// Get the modal
+const modal = document.getElementById('myModal');
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
   }
 }
