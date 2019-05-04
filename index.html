@@ -12,11 +12,10 @@
   <div id="myModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <h1>Time to Fight</h1>
-        <h2>Players take turns to attack or defend, choose wisely</h2>
-        <button>Attack!</button>
-        <button>Defend!</button>
+        <h1>Table Game</h1>
+        <h2>Move your character around and find weapons.</h2>
+        <h2>When players encounter, they take turns to attack or defend.</h2>
+        <button class="close">Let's play</button>
       </div>
   </div>
   <div id="game">
@@ -26,6 +25,8 @@
       <h3>Health: <span id="player1-health"></span></h3>
       <h3>Weapon: <span id="player1-weapon"></span></h3>
       <h3>Damage: <span id="player1-damage"></span></h3>
+      <button onclick="attackFunc()" class="fightButton1 attackButton">Attack</button>
+      <button onclick="defendFunc()" class="fightButton1 defendButton">Defend</button>
     </div>
     <div>
       <h1>Table Game</h1>
@@ -40,6 +41,8 @@
       <h3>Health: <span id="player2-health"></span></h3>
       <h3>Weapon: <span id="player2-weapon"></span></h3>
       <h3>Damage: <span id="player2-damage"></span></h3>
+      <button onclick="attackFunc()" class="fightButton2 attackButton">Attack</button>
+      <button onclick="defendFunc()" class="fightButton2 defendButton">Defend</button>
     </div>
   </div> 
  

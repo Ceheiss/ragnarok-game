@@ -32,7 +32,8 @@ const player1 = {
   },
   health: 200,
   hasWeapon: false,
-  currentWeapon: weapons[0]
+  currentWeapon: weapons[0],
+  isDefending: false
 }
 
 const player2 = {
@@ -42,7 +43,8 @@ const player2 = {
   },
   health: 200,
   hasWeapon: false,
-  currentWeapon: weapons[0]
+  currentWeapon: weapons[0],
+  isDefending: false
 }
 
 
@@ -69,6 +71,7 @@ function placeElements(className) {
   const random_x = generateRandomNum();
   const random_y = generateRandomNum();
   $('.grid-item').each(function(){
+    console.log("intento de clase: ", className)
     const element = $(this);
     if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
       if (!(this.classList.contains("unavailable"))){
@@ -131,18 +134,22 @@ displayStats(player2);
 }
 
 // Event handlers
+$('.close').click(generateGame)
 $('#start-btn').click(generateGame)
 $('#reset-btn').click(reset)
 
 /*=================================== Player Movements ================================== */
 // Variable to check movements
 let playerTurn = true; 
+let fightMode = false;
 
 function pathHighlight() {
-  if (playerTurn) {
-    possiblePath(player1)
-  } else {
-    possiblePath(player2)
+  if (!fightMode){
+    if (playerTurn) {
+      possiblePath(player1)
+    } else {
+      possiblePath(player2)
+    }
   }
 }
 
@@ -209,9 +216,12 @@ function reset() {
     element.removeClass("weapon-4");
     element.removeClass("player-1");
     element.removeClass("player-2");
-    element.removeClass("unavailable");
     element.removeClass("possible");
-    statReset()
+    element.removeClass("unavailable");
+    fightMode = false;
+    statReset();
+    $( ".fightButton1" ).css( "display", "none" );
+    $( ".fightButton2" ).css( "display", "none" );
   })
 }
 
@@ -330,10 +340,59 @@ function playerEncounter(){
 
 function handleFight(){
   if (playerEncounter()){
-    modal.style.display = "block";
+    fightMode = true;
+      if (playerTurn){
+        $( ".fightButton1" ).css("display", "inline-block");
+        $( ".fightButton2" ).css("display", "none");
+      } 
+      if (!playerTurn){
+        $( ".fightButton2" ).css("display", "inline-block");
+        $( ".fightButton1" ).css("display", "none");
+      }
   }
 }
- 
+
+function attackFunc(){
+  alert("attack");
+  handleFight();
+  if (!playerTurn){
+    if (player2.isDefending){
+      player2.health = player2.health  - (player1.currentWeapon.damage / 2);
+      displayStats(player2);
+    } else {
+      player2.health = player2.health  - player1.currentWeapon.damage;
+      displayStats(player2);
+    }
+  } else {
+    if (player1.isDefending){
+      player1.health = player1.health  - (player2.currentWeapon.damage / 2);
+      displayStats(player1);
+    } else {
+      player1.health = player1.health  - player2.currentWeapon.damage;
+      displayStats(player1);
+    }
+  }
+  player1.isDefending = false;
+  player2.isDefending = false;
+  playerTurn = !playerTurn;
+  isGameOver();
+} 
+
+function defendFunc(){
+  alert("defend");
+  handleFight();
+  if (!playerTurn){
+    player1.isDefending = true;
+    displayStats(player2);
+  } else {
+    player2.isDefending = true;
+    // Show a shield or something
+    displayStats(player1);
+  }
+  playerTurn = !playerTurn;
+  isGameOver();
+} 
+
 function weaponChecker(block, player){
   checkSmallerX (block, player)
   checkSmallerY (block, player)
@@ -430,6 +489,14 @@ function weaponChange(element, player){
   }
 }
 
+function isGameOver(){
+  if ((player1.health <= 0)
+      || (player2.health <= 0)){
+        alert("Game Over");
+        document.location.reload()
+      }
+}
+
 function displayStats(player) {
   const weapon = player.currentWeapon.name;
   const health = player.health;
@@ -455,7 +522,7 @@ function statReset(){
 }
 
 
-/*=========== MODAL STUFF ==============*/
+/*=========== MODAL STUFF ==============*/ 
 // Get the modal
 const modal = document.getElementById('myModal');
 // Get the <span> element that closes the modal
@@ -470,3 +537,8 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+window.onload(
+  modal.style.display = "block",
+  $( ".fightButton1" ).css( "display", "none" ),
+  $( ".fightButton2" ).css( "display", "none" )
+  )
