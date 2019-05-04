@@ -353,7 +353,6 @@ function handleFight(){
 }
 
 function attackFunc(){
-  alert("attack");
   handleFight();
   if (!playerTurn){
     if (player2.isDefending){
@@ -490,11 +489,30 @@ function weaponChange(element, player){
 }
 
 function isGameOver(){
-  if ((player1.health <= 0)
-      || (player2.health <= 0)){
-        alert("Game Over");
-        document.location.reload()
-      }
+  if (player1.health <= 0){
+      player1.health = 0;
+      displayStats(player1)
+      setTimeout(
+        function(){ 
+          // inner html Player name
+          document.getElementById("match-winner").innerHTML = " 2";
+          document.getElementById("winner-img").src ="https://townofmountainvillage.com/media/rotary-red-ball.jpg";
+          endModal.style.display = "block" 
+        }, 
+          1000);
+  }
+  if (player2.health <= 0){
+    player2.health = 0;
+    displayStats(player2)
+    setTimeout(
+      function(){ 
+        // inner html Player name
+        document.getElementById("match-winner").innerHTML = " 1";
+        document.getElementById("winner-img").src = "https://www.cheapbowlingballs.com/Assets/Balls/OnTheBall/Custom/Backround_Design/Blue.jpg";
+        endModal.style.display = "block" 
+      }, 
+        1000);
+  }
 }
 
 function displayStats(player) {
@@ -523,22 +541,33 @@ function statReset(){
 
 
 /*=========== MODAL STUFF ==============*/ 
+
+/*----- Start Modal -----*/
 // Get the modal
-const modal = document.getElementById('myModal');
-// Get the <span> element that closes the modal
-const span = document.getElementsByClassName("close")[0];
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+const startModal = document.getElementById('start-modal');
+// Get the element to close the modal
+const startBtn = document.getElementsByClassName("close")[0];
+// When the user clicks to start game
+startBtn.onclick = function() {
+  startModal.style.display = "none";
 }
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  if (event.target == startModal) {
+    startModal.style.display = "none";
   }
 }
+
+/*----- End Modal -----*/
+const endModal = document.getElementById('end-modal');
+const rematchBtn = document.getElementsByClassName("rematch")[0];
+rematchBtn.onclick = function() {
+  document.location.reload()
+}
+// When the user clicks anywhere outside of the modal, close it
 window.onload(
-  modal.style.display = "block",
+  startModal.style.display = "block",
+  endModal.style.display = "none",
   $( ".fightButton1" ).css( "display", "none" ),
   $( ".fightButton2" ).css( "display", "none" )
   )

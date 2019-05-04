@@ -9,13 +9,26 @@
 </head>
 <body>
   <!-- The Modal -->
-  <div id="myModal" class="modal">
+  <div id="start-modal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
         <h1>Table Game</h1>
         <h2>Move your character around and find weapons.</h2>
         <h2>When players encounter, they take turns to attack or defend.</h2>
         <button class="close">Let's play</button>
+      </div>
+  </div>
+  <div id="end-modal" class="modal-two">
+      <!-- Modal content -->
+      <div class="modal-content-two">
+        <h1>GAME OVER</h1>
+        <h2>Player <span id="match-winner"></span> won!</h2>
+        <div>
+            <img id="winner-img" class="player-img" src=""/>
+        </div>
+        <div>
+            <button class="rematch">Rematch!</button>
+        </div>
       </div>
   </div>
   <div id="game">
