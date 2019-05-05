@@ -1,3 +1,4 @@
+/*========== general ==========*/
 html {
   outline: 1px dotted red;
 }
@@ -7,13 +8,39 @@ body {
   font-family: arial;
 }
 
+/*========== sidebars ==========*/
+.fightButton1,  .fightButton2{
+  font-size: 15px;
+}
+
+.defendButton{
+  background: coral;
+}
+
+.attackButton{
+  background: maroon;
+}
+
+.player-img{
+  max-width: 150px;
+}
+
+.stats-box {
+  border: 2px solid grey;
+  background: #999;
+  margin: auto 5px;
+  padding: 15px;
+  height: 200%;
+  min-width: 250px;
+  min-height: 450px;
+}
+/*========== board ==========*/
 #game{
   display: flex;
   justify-content: center;
   flex-direction: row;
   text-align: center;
 }
-
 
 .possible {
   background: rgba(0,139,139, 0.7) !important;
@@ -97,19 +124,6 @@ body {
   font-size: 15px;
 }
 
-.player-img{
-  max-width: 150px;
-}
-
-.stats-box {
-  border: 2px solid grey;
-  background: #999;
-  margin: auto 5px;
-  padding: 15px;
-  height: 200%;
-  min-width: 250px;
-}
-
 #start-btn {
   background: rgb(50, 177, 50);
 }
@@ -118,7 +132,7 @@ body {
   background: rgb(192, 24, 24);
 }
 
-/*=========== Modal Window ==============*/
+/*=========== Modal Window =============*/
 .modal, .modal-two {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -154,22 +168,6 @@ body {
   border: 1px solid #888;
   width: 70%;
   height: 70%;
-}
-
-.fightButton1 {
-  font-size: 15px;
-}
-
-.fightButton {
-  font-size: 15px;
-}
-
-.defendButton{
-  background: coral;
-}
-
-.attackButton{
-  background: maroon;
 }
 
 /* The Close Button */

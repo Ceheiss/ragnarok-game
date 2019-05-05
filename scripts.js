@@ -14,7 +14,7 @@ const weapons =
     },
     {
       name: "Rubber Duck",
-      damage: 50,
+      damage: 60,
       className: "weapon-3"
     },
     {
@@ -104,6 +104,27 @@ function placeElements(className) {
   })
 }
 
+// Clean all the board
+function reset() {
+  $('.grid-item').each(function(){
+    const element = $(this);
+    element.removeClass("block");
+    element.removeClass("weapon");
+    element.removeClass("weapon-1");
+    element.removeClass("weapon-2");
+    element.removeClass("weapon-3");
+    element.removeClass("weapon-4");
+    element.removeClass("player-1");
+    element.removeClass("player-2");
+    element.removeClass("possible");
+    element.removeClass("unavailable");
+    fightMode = false;
+    statReset();
+    $( ".fightButton1" ).css( "display", "none" );
+    $( ".fightButton2" ).css( "display", "none" );
+  })
+}
+
 // This functions generates que board calling on the diferent pieces
 function generateGame(){
 reset();
@@ -141,7 +162,6 @@ $('#reset-btn').click(reset)
 /*=================================== Player Movements ================================== */
 // Variable to check movements
 let playerTurn = true; 
-let fightMode = false;
 
 function pathHighlight() {
   if (!fightMode){
@@ -204,27 +224,7 @@ function getPlayerPosition(){
   })
 }
 
-// Clean all the board
-function reset() {
-  $('.grid-item').each(function(){
-    const element = $(this);
-    element.removeClass("block");
-    element.removeClass("weapon");
-    element.removeClass("weapon-1");
-    element.removeClass("weapon-2");
-    element.removeClass("weapon-3");
-    element.removeClass("weapon-4");
-    element.removeClass("player-1");
-    element.removeClass("player-2");
-    element.removeClass("possible");
-    element.removeClass("unavailable");
-    fightMode = false;
-    statReset();
-    $( ".fightButton1" ).css( "display", "none" );
-    $( ".fightButton2" ).css( "display", "none" );
-  })
-}
-
+/*=================================== Handle Weapons ================================== */
 function playerReset(player) {
   $('.grid-item').each(function(){
     const element = $(this);
@@ -322,76 +322,7 @@ function isInDistance (player, block) {
   return (firstCondition || secondCondition)
 }
 
-/*=================================== Player Encounters ================================== */
-
-function handleWeapon (element, player) {
-  weaponChange(element, player)
-}
-  
-// What happens when players encounter each other
-function playerEncounter(){
-  getPlayerPosition()
-  const xPosition = Math.abs(Number(player1.position.x) - Number(player2.position.x));
-  const yPosition = Math.abs(Number(player2.position.y) - Number(player1.position.y));
-  return (((xPosition == 0) && ( yPosition == 1))
-          ||
-          ((yPosition == 0) && (xPosition == 1))
-  )}
-
-function handleFight(){
-  if (playerEncounter()){
-    fightMode = true;
-      if (playerTurn){
-        $( ".fightButton1" ).css("display", "inline-block");
-        $( ".fightButton2" ).css("display", "none");
-      } 
-      if (!playerTurn){
-        $( ".fightButton2" ).css("display", "inline-block");
-        $( ".fightButton1" ).css("display", "none");
-      }
-  }
-}
-
-function attackFunc(){
-  handleFight();
-  if (!playerTurn){
-    if (player2.isDefending){
-      player2.health = player2.health  - (player1.currentWeapon.damage / 2);
-      displayStats(player2);
-    } else {
-      player2.health = player2.health  - player1.currentWeapon.damage;
-      displayStats(player2);
-    }
-  } else {
-    if (player1.isDefending){
-      player1.health = player1.health  - (player2.currentWeapon.damage / 2);
-      displayStats(player1);
-    } else {
-      player1.health = player1.health  - player2.currentWeapon.damage;
-      displayStats(player1);
-    }
-  }
-  player1.isDefending = false;
-  player2.isDefending = false;
-  playerTurn = !playerTurn;
-  isGameOver();
-} 
-
-function defendFunc(){
-  alert("defend");
-  handleFight();
-  if (!playerTurn){
-    player1.isDefending = true;
-    displayStats(player2);
-  } else {
-    player2.isDefending = true;
-    // Show a shield or something
-    displayStats(player1);
-  }
-  playerTurn = !playerTurn;
-  isGameOver();
-} 
-
+// Check if there are any weapons in the path
 function weaponChecker(block, player){
   checkSmallerX (block, player)
   checkSmallerY (block, player)
@@ -399,6 +330,7 @@ function weaponChecker(block, player){
   checkLargerY (block, player)
 }
 
+// Check if there is a weapon left of the player
 function checkSmallerX (block, player){
   if (block.dataset['x'] < player.position.x){
     $('.possible').each(function(){
@@ -415,6 +347,7 @@ function checkSmallerX (block, player){
   }
 }
 
+// Check if there is a weapon right of the player
 function checkLargerX (block, player) {
   if (block.dataset['x'] > player.position.x){
     $('.possible').each(function(){
@@ -431,6 +364,7 @@ function checkLargerX (block, player) {
   }
 }
 
+// Check if there is a weapon under the player
 function checkSmallerY (block, player) {
   if (block.dataset['y'] < player.position.y){
     $('.possible').each(function(){
@@ -447,6 +381,7 @@ function checkSmallerY (block, player) {
   }
 }
 
+// Check if there is a weapon over the player
 function checkLargerY (block, player) {
   if (block.dataset['y'] > player.position.y){
     $('.possible').each(function(){
@@ -463,6 +398,8 @@ function checkLargerY (block, player) {
   }
 }
 
+// If there is a weapon, handle it by removing the class and replacing it
+// with the current one of the player
 function weaponChange(element, player){
   let playerWeapon = player.currentWeapon
   if(element.hasClass("weapon-1")){
@@ -488,10 +425,88 @@ function weaponChange(element, player){
   }
 }
 
+/*============================= Player Encounters  and fighting ============================= */
+let fightMode = false;
+
+function handleWeapon (element, player) {
+  weaponChange(element, player)
+}
+  
+// What happens when players encounter each other
+function playerEncounter(){
+  getPlayerPosition()
+  const xPosition = Math.abs(Number(player1.position.x) - Number(player2.position.x));
+  const yPosition = Math.abs(Number(player2.position.y) - Number(player1.position.y));
+  return (((xPosition == 0) && ( yPosition == 1))
+          ||
+          ((yPosition == 0) && (xPosition == 1))
+  )}
+
+  // Logic to take care of the turns
+function handleFight(){
+  if (playerEncounter()){
+    fightMode = true;
+      if (playerTurn){
+        $( ".fightButton1" ).css("display", "inline-block");
+        $( ".fightButton2" ).css("display", "none");
+      } 
+      if (!playerTurn){
+        $( ".fightButton2" ).css("display", "inline-block");
+        $( ".fightButton1" ).css("display", "none");
+      }
+  }
+}
+
+// Logic to take care of the attacks
+function attackFunc(){
+  handleFight();
+  if (!playerTurn){
+    if (player2.isDefending){
+      player2.health = player2.health  - (player1.currentWeapon.damage / 2);
+      displayStats(player2);
+    } else {
+      player2.health = player2.health  - player1.currentWeapon.damage;
+      displayStats(player2);
+    }
+  } else {
+    if (player1.isDefending){
+      player1.health = player1.health  - (player2.currentWeapon.damage / 2);
+      displayStats(player1);
+    } else {
+      player1.health = player1.health  - player2.currentWeapon.damage;
+      displayStats(player1);
+    }
+  }
+  player1.isDefending = false;
+  player2.isDefending = false;
+  playerTurn = !playerTurn;
+  isGameOver();
+} 
+
+// Defense
+function defendFunc(){
+  alert("defend");
+  handleFight();
+  if (!playerTurn){
+    player1.isDefending = true;
+    displayStats(player2);
+  } else {
+    player2.isDefending = true;
+    // Show a shield or something
+    displayStats(player1);
+  }
+  playerTurn = !playerTurn;
+  isGameOver();
+} 
+
+// Check if player is out of health and call  the box modal if that is the case
 function isGameOver(){
   if (player1.health <= 0){
       player1.health = 0;
-      displayStats(player1)
+      $( ".fightButton1" ).css( "display", "none" );
+      $( ".fightButton2" ).css( "display", "none" );
+      displayStats(player1);
+      // timeout used so the health can be seen before the modal box
       setTimeout(
         function(){ 
           // inner html Player name
@@ -503,6 +518,8 @@ function isGameOver(){
   }
   if (player2.health <= 0){
     player2.health = 0;
+    $( ".fightButton1" ).css( "display", "none" );
+    $( ".fightButton2" ).css( "display", "none" );
     displayStats(player2)
     setTimeout(
       function(){ 
@@ -514,7 +531,8 @@ function isGameOver(){
         1000);
   }
 }
-
+/*=============================== Handle Sidebars Display ============================== */
+// Display the stats at the sides
 function displayStats(player) {
   const weapon = player.currentWeapon.name;
   const health = player.health;
@@ -530,6 +548,7 @@ function displayStats(player) {
   }
 }
 
+// reset all stats
 function statReset(){
   document.getElementById("player1-weapon").innerHTML = "";
   document.getElementById("player1-health").innerHTML = "";
@@ -538,7 +557,6 @@ function statReset(){
   document.getElementById("player2-health").innerHTML = "";
   document.getElementById("player2-damage").innerHTML = "";
 }
-
 
 /*=========== MODAL STUFF ==============*/ 
 
@@ -557,7 +575,6 @@ window.onclick = function(event) {
     startModal.style.display = "none";
   }
 }
-
 /*----- End Modal -----*/
 const endModal = document.getElementById('end-modal');
 const rematchBtn = document.getElementsByClassName("rematch")[0];
