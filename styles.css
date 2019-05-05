@@ -1,8 +1,4 @@
 /*========== general ==========*/
-html {
-  outline: 1px dotted red;
-}
-
 body {
   text-align: center;
   font-family: arial;
@@ -116,6 +112,10 @@ body {
   border-radius: 50px;
   background: red!important;
   margin: auto;
+}
+
+.turn{
+  color: darkred
 }
 
 .btn {

@@ -188,7 +188,9 @@ const block = this;
           element.addClass("player-2");
           handleFight()
           playerTurn = !playerTurn;
-          displayStats(player)
+          displayStats(player);
+          $( "#2-player-turn" ).css( "display", "none" );
+          $( "#1-player-turn" ).css( "display", "block" );
           }
       } 
       if (player === player1) {
@@ -199,7 +201,9 @@ const block = this;
           element.addClass("player-1");
           handleFight()
           playerTurn = !playerTurn;
-          displayStats(player)
+          displayStats(player);
+          $( "#1-player-turn" ).css( "display", "none" );
+          $( "#2-player-turn" ).css( "display", "block" );
         }
       }
   }
@@ -446,6 +450,9 @@ function playerEncounter(){
 function handleFight(){
   if (playerEncounter()){
     fightMode = true;
+    $( ".turn" ).css( "display", "none" );
+    $( "#table" ).css( "display", "none" );
+    $( "#fight" ).css( "display", "block" );
       if (playerTurn){
         $( ".fightButton1" ).css("display", "inline-block");
         $( ".fightButton2" ).css("display", "none");
@@ -586,5 +593,7 @@ window.onload(
   startModal.style.display = "block",
   endModal.style.display = "none",
   $( ".fightButton1" ).css( "display", "none" ),
-  $( ".fightButton2" ).css( "display", "none" )
+  $( ".fightButton2" ).css( "display", "none" ),
+  $( "#fight" ).css( "display", "none" ),
+  $( "#2-player-turn" ).css( "display", "none" )
   )

@@ -31,6 +31,8 @@
         </div>
       </div>
   </div>
+  <!-- Prompt when characters meet to fight, outside Flex -->
+  <h1 id="fight">Time to battle!</h1>
   <!-- Board and sidebars -->
   <div id="game">
     <!-- sidebar player 1 -->
@@ -40,11 +42,12 @@
       <h3>Health: <span id="player1-health"></span></h3>
       <h3>Weapon: <span id="player1-weapon"></span></h3>
       <h3>Damage: <span id="player1-damage"></span></h3>
+      <h2 id="1-player-turn" class="turn">Your Turn!</h2>
       <button onclick="attackFunc()" class="fightButton1 attackButton">Attack</button>
       <button onclick="defendFunc()" class="fightButton1 defendButton">Defend</button>
     </div>
     <!-- Central Board -->
-    <div>
+    <div id="table">
       <h1>Table Game</h1>
       <button id="start-btn" class="btn">Start</button>
       <button id="reset-btn" class="btn">Reset</button>
@@ -58,6 +61,7 @@
       <h3>Health: <span id="player2-health"></span></h3>
       <h3>Weapon: <span id="player2-weapon"></span></h3>
       <h3>Damage: <span id="player2-damage"></span></h3>
+      <h2 id="2-player-turn" class="turn">Your Turn!</h2>
       <button onclick="attackFunc()" class="fightButton2 attackButton">Attack</button>
       <button onclick="defendFunc()" class="fightButton2 defendButton">Defend</button>
     </div>
