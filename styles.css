@@ -2,8 +2,16 @@
 body {
   text-align: center;
   font-family: arial;
+  background-image: linear-gradient(rgba(72, 110, 235, 0.3), rgba(39, 75, 35, 0.3)), url("https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+	background-position: center;
+  background-position: center;
+	background-attachment: fixed;
 }
 
+.table{
+  background: red;
+}
 /*========== sidebars ==========*/
 .fightButton1,  .fightButton2{
   font-size: 15px;
@@ -19,11 +27,13 @@ body {
 
 .player-img{
   max-width: 150px;
+  max-height: 150px;
 }
 
 .stats-box {
-  border: 2px solid grey;
-  background: #999;
+  border: 2px solid black;
+  border-radius: 7px;
+  background:#999;
   margin: auto 5px;
   padding: 15px;
   height: 200%;
@@ -39,51 +49,51 @@ body {
 }
 
 .possible {
-  background: rgba(0,139,139, 0.7) !important;
-  width: 70px;
-  height: 70px;
+  background: rgba(83,231,51, 0.2) !important;
   transition: 0.1s ease-in;
   cursor: pointer;
 }
 
 .possible:hover{
-  background: pink !important;
+  background: rgba(56, 139, 91, 0.7) !important;
 }
 
 .grid-container {
+  border: 2px solid black;
+  border-radius: 7px;
   display: grid;
   max-width: 700px;
   max-height: 700px;
   position: relative;
   grid-template: repeat(10, 1fr)/repeat(10, 1fr);
   margin: 10px auto;
-  border: 2px solid black;
+  background-image: url("images/grassCropped.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover; 
 }
 
 .grid-item {
-  outline: 1px solid rgba(0,0,0,0.5);
-  background: teal;
+  outline: 1px solid rgba(0,233,0,0.3);
+  background-image: url("http://www.stickpng.com/assets/images/58bf22fce443f41d77c734dd.png");
   width: 70px;
   height: 70px;
 }
 
 .block {
-  width: 60px;
-  height: 60px;
-  border-radius: 15px;
-  background-image: radial-gradient( black,#222,grey);
-  border: 4px solid black;
-}
-
-.weapon {
-  width: 40px;
-  height: 40px;
-  border-radius: -10px;
+  background-image: url("images/pino.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 60px 70px;
   margin: auto;
 }
 
 .weapon-1 {
-  background: gold!important;
+  background-image: url("https://images-na.ssl-images-amazon.com/images/I/41YMMBq9efL.jpg");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover; 
+  margin: auto;
 }
 
 .weapon-2 {
@@ -99,18 +109,18 @@ body {
 }
 
 .player-1 {
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-  background: blue!important;
+  background-image: url("images/Thor.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 60px 70px;
   margin: auto;
 }
 
 .player-2 {
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-  background: red!important;
+  background-image: url("images/loki.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 50px 70px;
   margin: auto;
 }
 
@@ -122,14 +132,6 @@ body {
   color: white;
   border-radius: 7px;
   font-size: 15px;
-}
-
-#start-btn {
-  background: rgb(50, 177, 50);
-}
-
-#reset-btn {
-  background: rgb(192, 24, 24);
 }
 
 /*=========== Modal Window =============*/
@@ -147,9 +149,30 @@ body {
 }
 
 /* Modal Content */
+#main-title {
+  font-family: 'Staatliches', cursive;
+  font-size: 120px;
+  color: gold;
+}
+
+#end-title {
+  font-family: 'Staatliches', cursive;
+  font-size: 80px;
+  color: rgb(76, 196, 72);
+}
+
+#fight {
+  font-family: 'Staatliches', cursive;
+  font-size: 80px;
+  color: darkred;
+}
+
 .modal-content{
-  background-color:forestgreen;
-  font-family: arial;
+  background-image: linear-gradient(rgba(7, 7, 23, 0.6), rgba(0, 0, 35, 0.7)), url("https://images.pexels.com/photos/33150/flash-thunderstorm-flash-of-lightning-black.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-position: center;
+  background-attachment: fixed;
   color: #eee;
   margin: 0;
   padding: 20px;

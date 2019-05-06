@@ -57,7 +57,7 @@ const generateRandomNum = () => Math.floor(Math.random() * 10);
 // Generate grid with blocks
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
-    $('.grid-container').append('<div class="grid-item" data-y='+i+' data-x='+j+'>Block at x='+j+' y='+i+'</div>')
+    $('.grid-container').append('<div class="grid-item" data-y='+i+' data-x='+j+'></div>')
   }
 }
 // Iterates different elements to display them on the board
@@ -156,8 +156,6 @@ displayStats(player2);
 
 // Event handlers
 $('.close').click(generateGame)
-$('#start-btn').click(generateGame)
-$('#reset-btn').click(reset)
 
 /*=================================== Player Movements ================================== */
 // Variable to check movements
@@ -186,11 +184,11 @@ const block = this;
           handleWeapon(element, player);
           playerReset("player-2");
           element.addClass("player-2");
+          $( "#2-player-turn" ).css( "display", "none" );
+          $( "#1-player-turn" ).css( "display", "block" );
           handleFight()
           playerTurn = !playerTurn;
           displayStats(player);
-          $( "#2-player-turn" ).css( "display", "none" );
-          $( "#1-player-turn" ).css( "display", "block" );
           }
       } 
       if (player === player1) {
@@ -199,11 +197,11 @@ const block = this;
           handleWeapon(element, player);
           playerReset("player-1");
           element.addClass("player-1");
+          $( "#1-player-turn" ).css( "display", "none" );
+          $( "#2-player-turn" ).css( "display", "block" );
           handleFight()
           playerTurn = !playerTurn;
           displayStats(player);
-          $( "#1-player-turn" ).css( "display", "none" );
-          $( "#2-player-turn" ).css( "display", "block" );
         }
       }
   }
@@ -517,8 +515,8 @@ function isGameOver(){
       setTimeout(
         function(){ 
           // inner html Player name
-          document.getElementById("match-winner").innerHTML = " 2";
-          document.getElementById("winner-img").src ="https://townofmountainvillage.com/media/rotary-red-ball.jpg";
+          document.getElementById("match-winner").innerHTML = "Loki, the god of mischief";
+          document.getElementById("winner-img").src ="images/loki.png";
           endModal.style.display = "block" 
         }, 
           1000);
@@ -531,8 +529,8 @@ function isGameOver(){
     setTimeout(
       function(){ 
         // inner html Player name
-        document.getElementById("match-winner").innerHTML = " 1";
-        document.getElementById("winner-img").src = "https://www.cheapbowlingballs.com/Assets/Balls/OnTheBall/Custom/Backround_Design/Blue.jpg";
+        document.getElementById("match-winner").innerHTML = "Thor, son of Odin";
+        document.getElementById("winner-img").src = "images/Thor.png";
         endModal.style.display = "block" 
       }, 
         1000);
