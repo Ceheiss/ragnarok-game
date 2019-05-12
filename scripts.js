@@ -1,5 +1,16 @@
 // Everything wrapped in an IIFE in order to not affect the global scope
 (function(){
+  // Start everything
+  function startAll(){
+    startModal.style.display = "block";
+    endModal.style.display = "none";
+    $( ".fightButton1" ).css( "display", "none" );
+    $( ".fightButton2" ).css( "display", "none" );
+    $( "#fight" ).css( "display", "none" );
+    $( "#2-player-turn" ).css( "display", "none" );
+  }
+
+  window.onload = startAll;
   /*=================================== Player Objects ================================== */
   // weapons
   const weapons = 
@@ -28,7 +39,7 @@
         className: "weapon-4",
         image: "images/lanza.png"
       },
-    ]
+    ];
 
   // players
   const player1 = {
@@ -40,7 +51,7 @@
     hasWeapon: false,
     currentWeapon: weapons[0],
     isDefending: false
-  }
+  };
 
   const player2 = {
     position: {
@@ -51,7 +62,7 @@
     hasWeapon: false,
     currentWeapon: weapons[0],
     isDefending: false
-  }
+  };
 
   /*=================================== Build The Game ================================== */
   // Generate random numbers
@@ -60,7 +71,7 @@
   // Generate grid with blocks
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
-      $('.grid-container').append('<div class="grid-item" data-y='+i+' data-x='+j+'></div>')
+      $('.grid-container').append('<div class="grid-item" data-y='+i+' data-x='+j+'></div>');
     }
   }
   // Iterates different elements to display them on the board
@@ -74,7 +85,6 @@
     const random_x = generateRandomNum();
     const random_y = generateRandomNum();
     $('.grid-item').each(function(){
-      console.log("intento de clase: ", className)
       const element = $(this);
       if (this.dataset['x'] == random_x && this.dataset['y'] == random_y) {
         if (!(this.classList.contains("unavailable"))){
@@ -94,8 +104,8 @@
             element.addClass("weapon");
           }
           if(playerEncounter()){
-            console.log("Early Encounter")
-            playerReset(className)
+            console.log("Early Encounter");
+            playerReset(className);
             placeElements(className);
           }
         } else {
@@ -103,7 +113,7 @@
           placeElements(className);
         }
       }
-    })
+    });
   }
 
   // Clean all the board
@@ -126,7 +136,7 @@
       statReset();
       $( ".fightButton1" ).css( "display", "none" );
       $( ".fightButton2" ).css( "display", "none" );
-    })
+    });
   }
 
   // This functions generates que board calling on the diferent pieces
@@ -135,28 +145,28 @@
   // Anonymous functions so I can pass the parameters to the function without calling it
   generate(function(){
     placeElements("block");
-  },12)
+  },12);
   generate(function(){
     placeElements("weapon-2");
-  },1)
+  },1);
   generate(function(){
     placeElements("weapon-3");
-  },1)
+  },1);
   generate(function(){
     placeElements("weapon-4");
-  },1)
+  },1);
   generate(function(){
     placeElements("frostbite");
-  },6)
+  },6);
   generate(function(){
     placeElements("shield");
-  },1)
+  },1);
   generate(function(){
     placeElements("player-1");
-  },1)
+  },1);
   generate(function(){
     placeElements("player-2");
-  },1)
+  },1);
   movePlayer(player1);
   movePlayer(player2);
   pathHighlight();
@@ -169,7 +179,7 @@
   }
 
   // Event handlers
-  $('.close').click(generateGame)
+  $('.close').click(generateGame);
 
   /*=================================== Player Movements ================================== */
   // Variable to check movements
@@ -178,50 +188,50 @@
   function pathHighlight() {
     if (!fightMode){
       if (playerTurn) {
-        possiblePath(player1)
+        possiblePath(player1);
       } else {
-        possiblePath(player2)
+        possiblePath(player2);
       }
     }
   }
 
   function movePlayer(player){
   $('.grid-item').click(function(){
-  pathHighlight()
+  pathHighlight();
   const element = $(this);
   const block = this;
     // Make sure is within distance
     if (element.hasClass("possible")) {
         if (player === player2) {
           if (!playerTurn){
-            foot.play()
-            weaponChecker(block, player)
+            foot.play();
+            weaponChecker(block, player);
             handleWeapon(element, player);
             playerReset("player-2");
             element.addClass("player-2");
             $( "#2-player-turn" ).css( "display", "none" );
             $( "#1-player-turn" ).css( "display", "block" );
-            handleFight()
+            handleFight();
             playerTurn = !playerTurn;
             displayStats(player);
             }
         } 
         if (player === player1) {
           if (playerTurn){
-            foot.play()
-            weaponChecker(block, player)
+            foot.play();
+            weaponChecker(block, player);
             handleWeapon(element, player);
             playerReset("player-1");
             element.addClass("player-1");
             $( "#1-player-turn" ).css( "display", "none" );
             $( "#2-player-turn" ).css( "display", "block" );
-            handleFight()
+            handleFight();
             playerTurn = !playerTurn;
             displayStats(player);
           }
         }
     }
-    pathHighlight()
+    pathHighlight();
   });
   }
 
@@ -237,7 +247,7 @@
         player2.position.x = this.dataset['x'];
         player2.position.y = this.dataset['y'];
       }
-    })
+    });
   }
 
   /*=================================== Handle Weapons ================================== */
@@ -246,7 +256,7 @@
       const element = $(this);
       element.removeClass(player);
       element.removeClass("possible");
-    })
+    });
   }
 
   function squareOccupied (element) {
@@ -254,19 +264,17 @@
       element.hasClass("block") || 
       element.hasClass("player-1") || 
       element.hasClass("player-2")
-      )
+      );
   }
 
   function possiblePath(player) {
     $('.grid-item').each(function(){
       const element = $(this);
       const block = this;
-      if (isInDistance(player, block)
-          && !squareOccupied(element)
-          ){
+      if (isInDistance(player, block) && !squareOccupied(element)){
         element.addClass("possible");
       }
-    })
+    });
     $('.grid-item').each(function(){
       const element = $(this);
       const block = this;
@@ -278,9 +286,9 @@
             const element = $(this);
             const block = this;
             if (block.dataset['x'] > occupiedObject.dataset['x']){
-              element.removeClass("possible")
+              element.removeClass("possible");
             }
-          })
+          });
         }
       }
       // value with lower X
@@ -291,9 +299,9 @@
             const element = $(this);
             const block = this;
             if (block.dataset['x'] < occupiedObject.dataset['x']){
-              element.removeClass("possible")
+              element.removeClass("possible");
             }
-          })
+          });
         }
       }
       // value with higher y
@@ -304,9 +312,9 @@
             const element = $(this);
             const block = this;
             if (block.dataset['y'] > occupiedObject.dataset['y']){
-              element.removeClass("possible")
+              element.removeClass("possible");
             }
-          })
+          });
         }
       }
       // value with lower y
@@ -317,34 +325,33 @@
             const element = $(this);
             const block = this;
             if (block.dataset['y'] < occupiedObject.dataset['y']){
-              element.removeClass("possible")
+              element.removeClass("possible");
             }
           })
         }
       }
     })
   }
-  
   // I need to reference all the elements that are "inDistance"
   // To determine if they have block or player class, if they do
   // movement is not possible
   function isInDistance (player, block) {
 
     const firstCondition = (Math.abs(block.dataset['x'] - player.position.x) <= 3)
-    && (block.dataset['y'] === player.position.y)
+    && (block.dataset['y'] === player.position.y);
 
     const secondCondition = (Math.abs(block.dataset['y'] - player.position.y) <= 3) 
-    && (block.dataset['x'] === player.position.x)
+    && (block.dataset['x'] === player.position.x);
 
-    return (firstCondition || secondCondition)
+    return (firstCondition || secondCondition);
   }
 
   // Check if there are any weapons in the path
   function weaponChecker(block, player){
-    checkSmallerX (block, player)
-    checkSmallerY (block, player)
-    checkLargerX (block, player)
-    checkLargerY (block, player)
+    checkSmallerX (block, player);
+    checkSmallerY (block, player);
+    checkLargerX (block, player);
+    checkLargerY (block, player);
   }
 
   // Check if there is a weapon left of the player
@@ -359,7 +366,7 @@
           if(element.hasClass("weapon") || 
             element.hasClass("shield") || 
             element.hasClass("frostbite")){
-              weaponChange(element, player)
+              weaponChange(element, player);
           }
         }
       })
@@ -378,7 +385,7 @@
           if(element.hasClass("weapon") || 
             element.hasClass("shield") || 
             element.hasClass("frostbite")){
-              weaponChange(element, player)
+              weaponChange(element, player);
           }
         }
       })
@@ -397,7 +404,7 @@
           if(element.hasClass("weapon") || 
             element.hasClass("shield") || 
             element.hasClass("frostbite")){
-              weaponChange(element, player)
+              weaponChange(element, player);
           }
         }
       })
@@ -416,7 +423,7 @@
           if(element.hasClass("weapon") || 
             element.hasClass("shield") || 
             element.hasClass("frostbite")){
-              weaponChange(element, player)
+              weaponChange(element, player);
           }
         }
       })
@@ -432,57 +439,57 @@
       element.addClass(playerWeapon.className);
       player.currentWeapon = weapons[0];
       weaponDisplay(player);
-      getItem.play()
+      getItem.play();
     } else if(element.hasClass("weapon-2")){
-      element.removeClass("weapon-2")
+      element.removeClass("weapon-2");
       element.addClass(playerWeapon.className);
       player.currentWeapon = weapons[1];
       weaponDisplay(player);
-      getItem.play()
+      getItem.play();
     } else if(element.hasClass("weapon-3")){
       element.removeClass("weapon-3");
       element.addClass(playerWeapon.className);
       player.currentWeapon = weapons[2];
       weaponDisplay(player);
-      getItem.play()
+      getItem.play();
     } else if(element.hasClass("weapon-4")){
       element.removeClass("weapon-4");
       element.addClass(playerWeapon.className);
       player.currentWeapon = weapons[3];
       weaponDisplay(player);
-      getItem.play()
+      getItem.play();
     } else if(element.hasClass("frostbite")){
       player.health -= 15;
       element.removeClass("frostbite");
       colorCheck(player2, "player2-health");
       colorCheck(player1, "player1-health");
-      frostbite.play()
+      frostbite.play();
     } else if(element.hasClass("shield")){
       player.health += 30;
       element.removeClass("shield");
       colorCheck(player2, "player2-health");
       colorCheck(player1, "player1-health");
-      drum.play()
+      drum.play();
     }
   }
 
   function weaponDisplay(player){
     if (player === player1){
-      document.getElementById("w-display-1").src = player.currentWeapon.image
+      document.getElementById("w-display-1").src = player.currentWeapon.image;
     } 
     if (player === player2){
-      document.getElementById("w-display-2").src = player.currentWeapon.image
+      document.getElementById("w-display-2").src = player.currentWeapon.image;
     }
   }
   /*============================= Player Encounters  and fighting ============================= */
   let fightMode = false;
 
   function handleWeapon (element, player) {
-    weaponChange(element, player)
+    weaponChange(element, player);
   } 
   // What happens when players encounter each other
   function playerEncounter(){
-    getPlayerPosition()
+    getPlayerPosition();
     const xPosition = Math.abs(Number(player1.position.x) - Number(player2.position.x));
     const yPosition = Math.abs(Number(player2.position.y) - Number(player1.position.y));
     return (((xPosition == 0) && ( yPosition == 1))
@@ -520,8 +527,8 @@
         player2.health = player2.health  - player1.currentWeapon.damage;
         displayStats(player2);
       }
-      colorCheck(player2, "player2-health")
-      colorCheck(player1, "player1-health")
+      colorCheck(player2, "player2-health");
+      colorCheck(player1, "player1-health");
     } else {
       if (player1.isDefending){
         player1.health = player1.health  - (player2.currentWeapon.damage / 2);
@@ -548,7 +555,6 @@
       displayStats(player2);
     } else {
       player2.isDefending = true;
-      // Show a shield or something
       displayStats(player1);
     }
     playerTurn = !playerTurn;
@@ -572,7 +578,7 @@
             document.getElementById("match-winner").innerHTML = "Loki, the god of mischief";
             document.getElementById("winner-img").src ="images/loki.png";
             document.getElementById("winner-gif").src = "https://i.gifer.com/VZvx.gif"
-            endModal.style.display = "block" 
+            endModal.style.display = "block" ;
           }, 
             800);
     }
@@ -580,7 +586,7 @@
       player2.health = 0;
       $( ".fightButton1" ).css( "display", "none" );
       $( ".fightButton2" ).css( "display", "none" );
-      displayStats(player2)
+      displayStats(player2);
       setTimeout(
         function(){ 
           // inner html Player name
@@ -590,7 +596,7 @@
           document.getElementById("match-winner").innerHTML = "Thor, son of Odin";
           document.getElementById("winner-img").src = "images/Thor.png";
           document.getElementById("winner-gif").src = "images/giphyThunder.gif";
-          endModal.style.display = "block" 
+          endModal.style.display = "block";
         }, 
           800);
     }
@@ -656,20 +662,14 @@
   // When the user clicks to start game
   startBtn.onclick = function() {
     startModal.style.display = "none";
+    thunder.play();
     background.play();
-  }
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == startModal) {
-      startModal.style.display = "none";
-      background.play();
-    }
   }
   /*----- End Modal -----*/
   const endModal = document.getElementById('end-modal');
   const rematchBtn = document.getElementsByClassName("rematch")[0];
   rematchBtn.onclick = function() {
-    document.location.reload()
+    document.location.reload();
   }
 
   /*----- Attack and Fight DOM ---------*/
@@ -694,7 +694,6 @@
 
   // Sound management
   let isPlaying = true;
-
   const volumeBtn = document.getElementById("back-volume");
   volumeBtn.onclick = function(){
     if (isPlaying){
@@ -709,14 +708,4 @@
       isPlaying = !isPlaying;
     }
   }
-  // When the user clicks anywhere outside of the modal, close it
-  document.onload(
-    startModal.style.display = "block",
-    endModal.style.display = "none",
-    $( ".fightButton1" ).css( "display", "none" ),
-    $( ".fightButton2" ).css( "display", "none" ),
-    $( "#fight" ).css( "display", "none" ),
-    $( "#2-player-turn" ).css( "display", "none" ),
-    thunder.play()
-  )
 }())

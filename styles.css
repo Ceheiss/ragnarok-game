@@ -18,8 +18,27 @@ footer {
   font-size: 14px;
 }
 
+button {
+  background: transparent;
+  border: 3px black solid;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 15px;
+  transition: 0.5s ease-out;
+}
+
 button:hover {
+  color: #fff;
+  background-color: black;
+  border-color: grey;
+  transform: scale(1.1);
   cursor: pointer;
+}
+
+button:focus {
+  outline: none;
 }
 
 .fab {
@@ -37,7 +56,8 @@ button:hover {
   background: red;
 }
 /*========== sidebars ==========*/
-.fightButton1,  .fightButton2{
+.fightButton1,
+.fightButton2{
   font-size: 15px;
 }
 
@@ -208,7 +228,8 @@ button:hover {
   cursor: pointer;
 }
 /*=========== Modal Window =============*/
-.modal, .modal-two {
+.modal,
+.modal-two {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -290,31 +311,13 @@ button:hover {
 }
 
 /* The Close Button */
-.close, .rematch {
+.close,
+.rematch {
   font-size: 28px;
   font-weight: bold;
   display: inline-block;
   color: gold;
 }
-
-button {
-  background: transparent;
-  border: 3px black solid;
-  border-radius: 3px;
-  padding: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  margin-left: 15px;
-  transition: 0.5s ease-out;
-}
-
-button:hover {
-  color: #fff;
-  background-color: black;
-  border-color: grey;
-  transform: scale(1.1);
-}
-
 /*======== animations =========*/
 /*----fThor animation----*/
 #init-Thor {
