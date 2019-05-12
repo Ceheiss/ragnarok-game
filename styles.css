@@ -2,11 +2,35 @@
 body {
   text-align: center;
   font-family: arial;
+  color: #222;
   background-image: linear-gradient(rgba(72, 110, 235, 0.3), rgba(39, 75, 35, 0.3)), url("https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
   background-size: cover;
 	background-position: center;
   background-position: center;
 	background-attachment: fixed;
+}
+
+footer {
+  width: 100%;
+  margin-top: 35px;
+  padding: 5px;
+  color: #999;
+  font-size: 14px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.fab {
+  color: skyblue;
+  margin-left: 15px;
+  transition: 0.3s ease-out;
+}
+
+.fab:hover{
+  color: gold;
+  transform: scale(2);
 }
 
 .table{
@@ -30,15 +54,20 @@ body {
   max-height: 150px;
 }
 
+.weapon-display{
+  max-width: 80px;
+  max-height: 80px;
+}
+
 .stats-box {
-  border: 2px solid black;
+  border: 2px solid #222;
   border-radius: 7px;
-  background:#999;
+  background:#9fbff2;
   margin: auto 5px;
   padding: 15px;
   height: 200%;
   min-width: 250px;
-  min-height: 450px;
+  min-height: 510px;
 }
 /*========== board ==========*/
 #game{
@@ -49,13 +78,13 @@ body {
 }
 
 .possible {
-  background: rgba(83,231,51, 0.2) !important;
+  background: rgba(83,231,51, 0.3);
   transition: 0.1s ease-in;
   cursor: pointer;
 }
 
 .possible:hover{
-  background: rgba(56, 139, 91, 0.7) !important;
+  background: rgba(56, 139, 91, 0.7);
 }
 
 .grid-container {
@@ -76,8 +105,26 @@ body {
 .grid-item {
   outline: 1px solid rgba(0,233,0,0.3);
   background-image: url("http://www.stickpng.com/assets/images/58bf22fce443f41d77c734dd.png");
+  border-radius: 7px;
   width: 70px;
   height: 70px;
+}
+
+.frostbite{
+  background-image: url("images/hielo.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 70px 70px;
+  margin: auto;
+  z-index: 1;
+}
+
+.shield{
+  background-image: url("images/escudo.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 70px 70px;
+  margin: auto;
 }
 
 .block {
@@ -89,23 +136,35 @@ body {
 }
 
 .weapon-1 {
-  background-image: url("https://images-na.ssl-images-amazon.com/images/I/41YMMBq9efL.jpg");
+  background-image: url("images/daga.png");
   background-position: center; 
   background-repeat: no-repeat; 
-  background-size: cover; 
+  background-size: 40px 40px;
   margin: auto;
 }
 
 .weapon-2 {
-  background: purple!important;
+  background-image: url("images/espada.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 70px 70px;
+  margin: auto;
 }
 
 .weapon-3 {
-  background: peru!important;
+  background-image: url("images/hacha.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 70px 70px;
+  margin: auto;
 }
 
 .weapon-4 {
-  background: springgreen!important;
+  background-image: url("images/lanza.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: 70px 70px;
+  margin: auto;
 }
 
 .player-1 {
@@ -134,6 +193,20 @@ body {
   font-size: 15px;
 }
 
+.box{
+  box-shadow: 7px 10px 12px -5px rgba(0,0,0,0.56);
+}
+
+#back-volume {
+  position: absolute;
+  top: 40px; left: 40px;
+  font-size: 30px;
+  color: darkred;
+}
+
+#back-volume:hover {
+  cursor: pointer;
+}
 /*=========== Modal Window =============*/
 .modal, .modal-two {
   display: none; /* Hidden by default */
@@ -151,20 +224,40 @@ body {
 /* Modal Content */
 #main-title {
   font-family: 'Staatliches', cursive;
+  margin: 10px;
   font-size: 120px;
   color: gold;
+}
+
+#instructions {
+  background: rgba(0,0,0,0.3);
+  border: 2px linear #333;
+  border-radius: 7px;
+  padding: 30px;
+  width: 60%;
+  margin: 0px auto 15px auto;
+  text-align: justify;
 }
 
 #end-title {
   font-family: 'Staatliches', cursive;
   font-size: 80px;
-  color: rgb(76, 196, 72);
+  color: gold;
+  /* color: rgb(76, 196, 72); */
 }
 
 #fight {
   font-family: 'Staatliches', cursive;
   font-size: 80px;
   color: darkred;
+}
+
+#winner-img {
+  margin: 20px;
+}
+
+#winner-gif {
+  max-width: 300px;
 }
 
 .modal-content{
@@ -176,35 +269,174 @@ body {
   color: #eee;
   margin: 0;
   padding: 20px;
-  border: 1px solid #888;
+  border: 7px solid #333;
   width: 100%;
   height: 100%;
 }
 
 .modal-content-two {
-  text-align: center;
-  background-color:coral;
-  font-family: arial;
+  background-image: linear-gradient(rgba(7, 7, 23, 0.6), rgba(0, 0, 35, 0.7)), url("https://images.pexels.com/photos/33150/flash-thunderstorm-flash-of-lightning-black.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+	background-position: center;
+  background-position: center;
+	background-attachment: fixed;
   color: #eee;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border-radius: 8px;
+  border: 1px solid #222;
   width: 70%;
-  height: 70%;
+  height: 90%;
 }
 
 /* The Close Button */
 .close, .rematch {
-  text-align: center;
-  color: #aaaaaa;
   font-size: 28px;
   font-weight: bold;
   display: inline-block;
+  color: gold;
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+button {
+  background: transparent;
+  border: 3px black solid;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 15px;
+  transition: 0.5s ease-out;
+}
+
+button:hover {
+  color: #fff;
+  background-color: black;
+  border-color: grey;
+  transform: scale(1.1);
+}
+
+/*======== animations =========*/
+/*----fThor animation----*/
+#init-Thor {
+  animation-name: thor-animation;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes thor-animation {
+  0% {
+    transform: translateX(-300%);
+  }
+  100% {
+    transform: translateX(0%)
+  }  
+}
+/*----Loki animation----*/
+#init-Loki{
+  animation-name: loki-animation;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes loki-animation {
+  0% {
+    transform: translateX(300%);
+  }
+  100% {
+    transform: translateX(0%)
+  }  
+}
+
+#main-title {
+  animation-name: title-animation;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes title-animation {
+  0% {
+    transform: translateY(300%);
+  }
+  100% {
+    transform: translateY(0%)
+  }  
+}
+
+#instructions {
+  animation-name: inst-animation;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes inst-animation {
+  0% {
+    opacity: 0;
+    transform: translateY(-300%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%)
+  }  
+}
+
+.close {
+  animation-name: btn-animation;
+  animation-duration: 3s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes btn-animation {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }  
+}
+
+#winner-phrase {
+  animation-name: winner-animation;
+  animation-duration: 3s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes winner-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }  
+}
+
+#end-title {
+  animation-name: end-title-animation;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+@keyframes end-title-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }  
 }

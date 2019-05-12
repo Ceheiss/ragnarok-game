@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Ragnarok</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,58 +13,99 @@
   <!-- The Modal -->
   <div id="start-modal" class="modal">
       <!-- Modal content -->
-      <div class="modal-content">
+      <div class="modal-content box">
         <h1 id="main-title">Ragnarok</h1>
-        <h2>Move your character around and find weapons.</h2>
-        <h2>When players encounter, they take turns to attack or defend.</h2>
+        <img class="player-img" id="init-Thor" src="images/Thor.png"/>
+        <img class="player-img" id="init-Loki" src="images/loki.png"/>
+        <div id="instructions">
+          <h2>Move your character around and find weapons. Explore to find the most powerful one.</h2>
+          <h2>If you take the Hero's Shield, it will provide you extra defense in battle.</h2>
+          <h2>When players encounter, they take turns to attack or defend.</h2>
+          <h2>Be careful with the frostbite! It will damage you.</h2>
+          <p>*This game has to be played on a full screen.</p>
+        </div>
         <button class="close">Let's play</button>
       </div>
   </div>
   <div id="end-modal" class="modal-two">
       <!-- Modal content -->
-      <div class="modal-content-two">
+      <div class="modal-content-two box">
         <h1 id="end-title">Raise your horns!</h1>
-        <h2><span id="match-winner"></span> won the battle!</h2>
+        <h2 id="winner-phrase"><span id="match-winner"></span> won the battle!</h2>
         <div>
             <img id="winner-img" class="player-img" src=""/>
+            <img id="winner-gif" src=""/>
         </div>
         <div>
             <button class="rematch">Rematch!</button>
         </div>
+        <footer> <p>Illustrations by Valentina Reyes C</p><p>Game developed by Cristobal Heiss J <a href="https://www.freecodecamp.org/ceheiss" target="_blank"><i class="fab fa-free-code-camp"></i></a>  <a href="https://github.com/Ceheiss" target="_blank"><i class="fab fa-github"></i></a>  <a href="https://twitter.com/cristobalheiss" target="_blank"><i class="fab fa-twitter"></i></a>  <a href="https://www.codepen.io/ceheiss" target="_blank"><i class="fab fa-codepen"></i></a></p></footer>
       </div>
   </div>
+ 
   <!-- Prompt when characters meet to fight, outside Flex -->
   <h1 id="fight">Time to battle!</h1>
+  <i id="back-volume" class="fas fa-volume-up" title="background music"></i>
   <!-- Board and sidebars -->
   <div id="game">
     <!-- sidebar player 1 -->
-    <div id="player1-box" class="stats-box">
+    <div id="player1-box" class="stats-box box">
       <h2>Thor</h2>
       <img class="player-img" src="images/Thor.png"/>
       <h3>Health: <span id="player1-health"></span></h3>
       <h3>Weapon: <span id="player1-weapon"></span></h3>
+      <img class="weapon-display" id="w-display-1" src="" />
       <h3>Damage: <span id="player1-damage"></span></h3>
       <h2 id="1-player-turn" class="turn">Your Turn!</h2>
-      <button onclick="attackFunc()" class="fightButton1 attackButton">Attack</button>
-      <button onclick="defendFunc()" class="fightButton1 defendButton">Defend</button>
+      <button id="attack1" class="fightButton1 attackButton">Attack</button>
+      <button id="defend1" class="fightButton1 defendButton">Defend</button>
     </div>
     <!-- Central Board -->
     <div id="table">
-      <div class="grid-container"></div>
+      <div class="grid-container box"></div>
       <div id="element"></div>
     </div>
     <!-- sidebar player 2 -->
-    <div id="player2-box" class="stats-box">
+    <div id="player2-box" class="stats-box box">
       <h2>Loki</h2>
       <img class="player-img" src="images/loki.png"/>
       <h3>Health: <span id="player2-health"></span></h3>
       <h3>Weapon: <span id="player2-weapon"></span></h3>
+      <img class="weapon-display" id="w-display-2" src="" />
       <h3>Damage: <span id="player2-damage"></span></h3>
       <h2 id="2-player-turn" class="turn">Your Turn!</h2>
-      <button onclick="attackFunc()" class="fightButton2 attackButton">Attack</button>
-      <button onclick="defendFunc()" class="fightButton2 defendButton">Defend</button>
+      <button id="attack2" class="fightButton2 attackButton">Attack</button>
+      <button id="defend2" class="fightButton2 defendButton">Defend</button>
     </div>
-  </div> 
+  </div>
+  <!-- Sound Effects-->
+  <audio id="thunder" src="sounds/thunder.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="attack" src="sounds/attack.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="background" src="sounds/background.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="frostbite" src="sounds/frostbite.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="getItem" src="sounds/getItem.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="horn" src="sounds/horn.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="drum" src="sounds/drum.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="foot" src="sounds/foot.mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="celebrate" src="sounds/celebrate.mp3">
+    Your browser does not support the audio element.
+  </audio>
   <!-- JQUERY -->
   <script
   src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
