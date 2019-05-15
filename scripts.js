@@ -336,13 +336,10 @@
   // To determine if they have block or player class, if they do
   // movement is not possible
   function isInDistance (player, block) {
-
     const firstCondition = (Math.abs(block.dataset['x'] - player.position.x) <= 3)
     && (block.dataset['y'] === player.position.y);
-
     const secondCondition = (Math.abs(block.dataset['y'] - player.position.y) <= 3) 
     && (block.dataset['x'] === player.position.x);
-
     return (firstCondition || secondCondition);
   }
 
@@ -571,13 +568,12 @@
         // timeout used so the health can be seen before the modal box
         setTimeout(
           function(){ 
-            // inner html Player name
             background.pause();
             horn.play();
             celebrate.play();
             document.getElementById("match-winner").innerHTML = "Loki, the god of mischief";
             document.getElementById("winner-img").src ="images/loki.png";
-            document.getElementById("winner-gif").src = "https://i.gifer.com/VZvx.gif"
+            document.getElementById("winner-gif").src = "images/fireworks.gif"
             endModal.style.display = "block" ;
           }, 
             800);
@@ -589,7 +585,6 @@
       displayStats(player2);
       setTimeout(
         function(){ 
-          // inner html Player name
           background.pause();
           horn.play();
           celebrate.play();
@@ -654,6 +649,8 @@
   }
   
   /*=========== MODAL STUFF ==============*/ 
+  const table = document.querySelector('.table');
+  const load = document.getElementById('load');
   /*----- Start Modal -----*/
   // Get the modal
   const startModal = document.getElementById('start-modal');
