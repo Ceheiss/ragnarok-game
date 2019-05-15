@@ -56,3 +56,5 @@ A little example of the game:
   colorCheck(player2, "player2-health");
   }
   ```
+# [Play it here](   https://ceheiss.github.io/ragnarok-game/)
+
