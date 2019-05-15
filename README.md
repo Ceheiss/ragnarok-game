@@ -1,5 +1,6 @@
 # Ragnarok Turn Based Game
-##Turn based game for OpenClassrooms. The requirements were: 
+![starting image](images/ragnarok-title.png)
+## Turn based game for OpenClassrooms. The requirements were: 
 - Each player attacks in turn
 - The damage depends on the player's weapon
 - The player can choose to attack or defend against the next shot
@@ -10,12 +11,12 @@ Made by [Cristobal Heiss](https://github.com/Ceheiss)
 
 The game has two characters (Thor and Loki) and have to take turns to explore the map in order to find weapons before they fight. Besides weapons, a shield can be found that will upgrade the health of the player that finds it, also frostbites can be found in the map that will damage the player.
 
-A little example of th game:
+A little example of the game:
 
 ![game play](images/game.gif)
 
 ## Sample code
-`
+```javascript
  // This functions generates que board calling on the diferent pieces
   function generateGame(){
   reset();
@@ -54,4 +55,4 @@ A little example of th game:
   colorCheck(player1, "player1-health");
   colorCheck(player2, "player2-health");
   }
-  `
+  ```
